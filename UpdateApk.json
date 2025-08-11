@@ -1,7 +1,7 @@
 {
-  "versionCode": 112,                // число — для сравнения с BuildConfig.VERSION_CODE
-  "versionName": "1.1.2",            // для отображения
+  "versionCode": 112,
+  "versionName": "1.1.2",
   "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/v1.0.3/NyxSound_v1.0.3.apk",
   "changelog": "• Исправления багов\n• Улучшен звук",
-  "sha256": "ABCD1234... (необязательно)"
+  "sha256": ""
 }
