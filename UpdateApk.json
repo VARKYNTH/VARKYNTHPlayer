@@ -1,7 +1,7 @@
 {
-  "versionCode": 112,
-  "versionName": "1.1.2",
-  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B0/NyxSound_1.1.2.Beta.apk",
+  "versionCode": 113,
+  "versionName": "1.1.3",
+  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B0/NyxSound.apk",
   "changelog": "• получение обновления в приложении и дальнейшее скачивание\n• правки ошибок",
-  "sha256": "0117465c83422d4c61cec6e40b20610195848dac451f810392bcea1addf9d203"
+  "sha256": "34b65fa4b08dc8effb815c72317e8d0716ef550c37f7410cfd6e207f8d76bbdf"
 }
