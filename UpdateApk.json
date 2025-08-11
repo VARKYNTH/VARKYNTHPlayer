@@ -1,10 +1,7 @@
 {
-  "Visibility": "VISIBLE",
-  "Title": "NyxSound",
-  "Description": "Test Message",
-  "MainTextButton": "Update",
-  "Cancelable": "true",
-  "CancelButtonText": "Cancel",
-  "DownloadLink": "https://github.com/SYNORIX-Studios/NyxSound/blob/main/UpdateApk.json",
-  "Version": "1.1"
+  "versionCode": 112,                // число — для сравнения с BuildConfig.VERSION_CODE
+  "versionName": "1.1.2",            // для отображения
+  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/v1.0.3/NyxSound_v1.0.3.apk",
+  "changelog": "• Исправления багов\n• Улучшен звук",
+  "sha256": "ABCD1234... (необязательно)"
 }
