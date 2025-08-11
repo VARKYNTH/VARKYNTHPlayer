@@ -1,5 +1,6 @@
 ![GitHub all releases](https://img.shields.io/github/downloads/SYNORIX-Studios/NyxSound/total)
 ![GitHub release (latest by date)](https://img.shields.io/github/downloads/SYNORIX-Studios/NyxSound/latest/total)
+![Platform](https://img.shields.io/badge/platform-Android%20%7C%20Windows%20%7C%20Linux-blue)
 # NyxSound
 NyxSound is a modern music player designed for those who value sound quality and convenience.
 The app supports playback of all popular music formats, features a smooth and optimized interface, and works fast even on older devices.
