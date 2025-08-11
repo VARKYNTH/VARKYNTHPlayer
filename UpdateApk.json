@@ -1,6 +1,6 @@
 {
-  "versionCode": 114,
-  "versionName": "1.1.4",
+  "versionCode": 115,
+  "versionName": "1.1.5",
   "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B05/NyxSound.apk",
   "changelog": "•Измененние MediaService\n• правки ошибок\n•новая система декодирования в FLOAT если не поддерживает устройство то сбрасывает в 16BIT\n•Новые версии библиотек для дизайна и для настроек декодера и воспроизведения\n°Бета 5 основана на альфа версиях библиотек и может содержать ошибки",
   "sha256": "a24739e22db2f01a0e9b654b6ead780a8ddddaec180563b3640cd44498f78ba0"
