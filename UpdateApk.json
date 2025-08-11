@@ -1,7 +1,7 @@
 {
   "versionCode": 114,
   "versionName": "1.1.4",
-  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B04/NyxSound.apk",
-  "changelog": "•Измененние MediaService\n• правки ошибок\n•Воспроизведение через AAudio в высоком качестве\n•Улучшение воспроизведение и качества звука\n°имейте ввиду это бета 4 могут быть ошибки или ещё что хуже я заметил только задержку довольно сильную при перемотке трека",
-  "sha256": "3ffd70f7f68d09e51b33ea3234794caccc0d7cd327b50296031d090e64a2d85f"
+  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B05/NyxSound.apk",
+  "changelog": "•Измененние MediaService\n• правки ошибок\n•новая система декодирования в FLOAT если не поддерживает устройство то сбрасывает в 16BIT\n•Новые версии библиотек для дизайна и для настроек декодера и воспроизведения\n°Бета 5 основана на альфа версиях библиотек и может содержать ошибки",
+  "sha256": "a24739e22db2f01a0e9b654b6ead780a8ddddaec180563b3640cd44498f78ba0"
 }
