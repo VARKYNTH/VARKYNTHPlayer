@@ -1,7 +1,7 @@
 {
-  "versionCode": 115,
-  "versionName": "1.1.5",
-  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B05/NyxSound.apk",
-  "changelog": "•Измененние MediaService\n• правки ошибок\n•новая система декодирования в FLOAT если не поддерживает устройство то сбрасывает в 16BIT\n•Новые версии библиотек для дизайна и для настроек декодера и воспроизведения\n°Бета 5 основана на альфа версиях библиотек и может содержать ошибки",
-  "sha256": "a24739e22db2f01a0e9b654b6ead780a8ddddaec180563b3640cd44498f78ba0"
+  "versionCode": 116,
+  "versionName": "1.1.6",
+  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B06/NyxSound.apk",
+  "changelog": "•Фикс цвета\n•Установлены стабильные библиотеки",
+  "sha256": "26cff0fe62f189a05f14280f616f268fe2cf3b3daeb5b70f4341e60ce42a2478"
 }
