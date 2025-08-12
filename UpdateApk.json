@@ -1,7 +1,7 @@
 {
-  "versionCode": 117,
-  "versionName": "1.1.7 Beta7",
-  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B07/NyxSound.apk",
-  "changelog": "•Воспроизведение через bit-perfect\n•Так же если bit-perfect у вас не доступен то автоматически включается hi-res до 32bit и 384hz\n•В меню показывает hz,buffer,bit\n•Перестроен MusicService на максимальное качество воспроизведения",
-  "sha256": "7708c4b8a7bdec88ffb314d471e3c4f01ea217138c1b1d5095da1daf90545fc3"
+  "versionCode": 118,
+  "versionName": "1.1.8 Beta8",
+  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B08/NyxSound.apk",
+  "changelog": "•Создана библиотека libsynsound.so в которую перенес функции AAudio контроль стал выше и звук чище\n•Автоматическое определение пика качества устройства",
+  "sha256": "844a9ed149399b182bd05a52309f5bfdd334a984d17762ed7fe548cbf9498f66"
 }
