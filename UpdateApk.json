@@ -1,7 +1,7 @@
 {
-  "versionCode": 118,
-  "versionName": "1.1.8 Beta8",
-  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B08/NyxSound.apk",
-  "changelog": "•Создана библиотека libsynsound.so в которую перенес функции AAudio контроль стал выше и звук чище\n•Автоматическое определение пика качества устройства",
-  "sha256": "844a9ed149399b182bd05a52309f5bfdd334a984d17762ed7fe548cbf9498f66"
+  "versionCode": 119,
+  "versionName": "1.1.9 Beta9",
+  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B09/NyxSound.apk",
+  "changelog": "•Исправлены ошибки\n•Исправлены ошибки Автоматического определения пика качества устройства\n•Теперь плеер использует пик вашего устройства стабильно:)",
+  "sha256": "8eef9f1d32f6481f1799b9e7f3ee93da81517119779bcc8b74f62a5ae7057ecd"
 }
