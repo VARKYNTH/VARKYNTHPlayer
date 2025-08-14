@@ -1,7 +1,7 @@
 {
-  "versionCode": 1112,
-  "versionName": "1.1.12 Beta12",
-  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B012/NyxSound_Github.apk",
-  "changelog": "•Режим Pro Audio\n•прошлый режим отключен иза совета AI",
-  "sha256": "4d2ade2ae3a96724f15dbbd88ec0f82abd28cc8cbaf1cc61be6d8e9d83e74001"
+  "versionCode": 1113,
+  "versionName": "1.1.13 Beta13",
+  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B013/NyxSound_Github.apk",
+  "changelog": "•Добавоен софт-клиппер(мягко подрезает пики — звук плотный, без пердежа)\n•Добавлен TPDF-дизер (что бы звук не хрустел)\n•авто-нормализация (AGC) по RMS (ровный уровень громкости без скачков)",
+  "sha256": "a4d540d974bf3e0d8a9a2fe924078708b9f3624a56a8c30ec79491e4753df642"
 }
