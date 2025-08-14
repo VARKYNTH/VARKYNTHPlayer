@@ -1,7 +1,7 @@
 {
-  "versionCode": 1114,
-  "versionName": "1.1.14 Beta14",
-  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B014/NyxSound_Github.apk",
-  "changelog": "•Правки ошибки библиотеки\n•Если поддерживает устройство то включает FLOAT (32BIT) 96000 HZ\n•Дополнительние улучшения для максимального качества звука проигрывания\n°Ближе к Beta16 Будет возможность их включать и выключать в настройках:)",
-  "sha256": "88646e1e61ed6eb2dab7a404eb1a17199e5f4adb96fe80d3386216b410095c6a"
+  "versionCode": 1115,
+  "versionName": "1.1.15 Beta15",
+  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B015/NyxSound_Github.apk",
+  "changelog": "•Правки ошибки библиотеки\n•Если поддерживает устройство то включает FLOAT (32BIT) 96000 HZ\n•Дополнительние улучшения для максимального качества звука проигрывания\n°Ближе к Beta16 Будет возможность их включать и выключать в настройках:)\n\n°Исправлена ошибка воспроизведения библиотеки v1.1.14 Beta14",
+  "sha256": "32efbba422d39140ebd35768a33b3a17c9746d391772ed519338794276a0eef1"
 }
