@@ -1,7 +1,7 @@
 {
-  "versionCode": 1111,
-  "versionName": "1.1.11 Beta11",
-  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B011/NyxSound_Github.apk",
-  "changelog": "•Исправлены ошибки\n•ПРЕДУПРЕЖДЕНИЕ БИБЛИОТЕКА ПЕРЕВЕДЕНА В РЕЖИМ БЕЗ ОГРАНИЧЕНИЙ ВАШЕ УСТРОЙСТВО БУДЕТ ИСПОЛЬЗОВАТЬСЯ НА МАКСИМУМ!!! А ТАК ЖЕ РЕЖИМ ВОСПРОИЗВЕДЕНИЯ ПРОИЗВОДИТЕЛЬНОСТЬ (МАСИМАЛЬНЫЙ)\n°(текст к тому что выше) в библиотеке настроен режим производительность а так же режим произведения на максимальный уровень качество звука максимальное что заявленое у вас в системе по сути используются все ресурсы вашего устройства:)",
-  "sha256": "a3aedd59f666f2e19591b6bdfdde14ce9a88157eda0b6e063253cf7782284456"
+  "versionCode": 1112,
+  "versionName": "1.1.12 Beta12",
+  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B012/NyxSound_Github.apk",
+  "changelog": "•Режим Pro Audio\n•прошлый режим отключен иза совета AI",
+  "sha256": "4d2ade2ae3a96724f15dbbd88ec0f82abd28cc8cbaf1cc61be6d8e9d83e74001"
 }
