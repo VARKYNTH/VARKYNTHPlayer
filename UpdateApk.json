@@ -1,7 +1,7 @@
 {
-  "versionCode": 1113,
-  "versionName": "1.1.13 Beta13",
-  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B013/NyxSound_Github.apk",
-  "changelog": "•Добавоен софт-клиппер(мягко подрезает пики — звук плотный, без пердежа)\n•Добавлен TPDF-дизер (что бы звук не хрустел)\n•авто-нормализация (AGC) по RMS (ровный уровень громкости без скачков)",
-  "sha256": "a4d540d974bf3e0d8a9a2fe924078708b9f3624a56a8c30ec79491e4753df642"
+  "versionCode": 1114,
+  "versionName": "1.1.14 Beta14",
+  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B014/NyxSound_Github.apk",
+  "changelog": "•Правки ошибки библиотеки\n•Если поддерживает устройство то включает FLOAT (32BIT) 96000 HZ\n•Дополнительние улучшения для максимального качества звука проигрывания\n°Ближе к Beta16 Будет возможность их включать и выключать в настройках:)",
+  "sha256": "c433d86e1632cfccbefce53b75c32b72e31b38fd090a25e6fecd297b0c032884"
 }
