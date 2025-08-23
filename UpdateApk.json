@@ -1,7 +1,7 @@
 {
-  "versionCode": 1117,
-  "versionName": "1.1.17 Beta17",
-  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B017/NyxSound_Github.apk",
-  "changelog": "•Исправление ошибок\n•Обновлен дизайн\n•Улучшена оптимизации и автономность\n•Улучшена поддержка системных эффектов (дефолт)\n•Исправлена проблема с перезаходом в полноэкранный плеер (были вылеты)",
-  "sha256": "7302976cfabc03ce7e88c14aa418d1b45249f694ac51441136120ce49c14088d"
+  "versionCode": 1118,
+  "versionName": "1.1.18 Beta18",
+  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%8C%D0%B018/NyxSound_Github.apk",
+  "changelog": "•Исправление ошибок\n•Обновлен дизайн\n•Улучшена оптимизации и автономность\n•Работают все динамики на устройстве:)\n•SDK min 32/Max 36 так что простите:(\n•Улучшена поддержка эффектов и перенастроен режим воспроизведения",
+  "sha256": "cc630806e9775bc571ab29e9a5a6b8bbbf5f5a0818115e67c6d4a5c538a8dfa9"
 }
