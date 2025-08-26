@@ -1,7 +1,7 @@
 {
-  "versionCode": 1119,
-  "versionName": "1.1.19 Beta19",
-  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B019/NyxSound_Github_sign.apk",
-  "changelog": "•Исправление ошибок\n•Обновлен дизайн\n•Теперь получить обновление можно в настройках\n•Исправлены ошибки библиотеки теперь поддержка sdk 28/36\n°В следующем обновлении будет выбор через какой аудио выход вы хотите слушать музыку AAudio/AudioTrack",
-  "sha256": "e4a0e20773b89310cfd43f04112ee9b3d2939f0c3e93727bba51633becad1b72"
+  "versionCode": 1200,
+  "versionName": "1.2.0.0 Beta",
+  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B020/NyxSound_Github_sign.apk",
+  "changelog": "•Исправление ошибок\n•AAudio убран(временно)\n•Воспроизведение через AudioTrack самый стабильный и мощный вариант\n•Поддержка Android 6.0 и до Android 16\n•Исправлена ошибка получения обновления\n•Улучшено воспроизведения и Аудио выход\n•Максимальная поддержка системы для полностью рабочих эффектов",
+  "sha256": "4fd0bf3fa1dce27ed800d88a8cb0db04540206fa48d92121d5cc9aac1b7ea236"
 }
