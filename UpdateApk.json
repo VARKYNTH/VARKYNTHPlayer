@@ -1,7 +1,7 @@
 {
-  "versionCode": 1202,
-  "versionName": "1.2.0.2 Beta",
-  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B022/NyxSound_Github_sign.apk",
-  "changelog": "•Исправление ошибок\n•Исправлен RG 6.0 для треков в которых нету RG Тега\n•Исправлен лимитер",
-  "sha256": "6c0ac105563df8dc98949677d7c5f9b61422399783e7a0f9980f7a25b8e7f8c5"
+  "versionCode": 1203,
+  "versionName": "1.2.0.3 Beta",
+  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B023/NyxSound_Github_sign.apk",
+  "changelog": "•Исправлени ошибоки\n•Улучшение автономности\n•Исправлены и улучшены функции плеера",
+  "sha256": "ecea2f4be216a923a76f30ac8092ccb73888cb34edd4996290bb7b90e7b4d3df"
 }
