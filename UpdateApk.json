@@ -1,7 +1,7 @@
 {
-  "versionCode": 1205,
-  "versionName": "1.2.0.5 Beta",
-  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/%D0%91%D0%B5%D1%82%D0%B025/NyxSound_Github_sign.apk",
-  "changelog": "•Исправлени ошибоки\n•Добавлена функция повтора одного и всего списка треков и разброс треков\n•Удалены окончательно лишние библиотеки а так же скрытый логер и дебагер (не мои)",
-  "sha256": "1cb526a7407ca216b70fe7cea77f103b28ecab2d7481e350f614bac3b72d8268"
+  "versionCode": 1210,
+  "versionName": "1.2.1.0 Stable",
+  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/Stable/NyxSound_Github_sign.apk",
+  "changelog": "•Исправлени ошибоки\n• Воспроизведение через media3 (современый API) \n• Изменены иконки (все) \n• Приложение работает стабильно исправлены все заметные ошибки и изменён немного дизайн так же изменено уведомление",
+  "sha256": "f136b2ecc1a6781273b0278af5bae04b792024c2a280e9ea3185c660c555d0c4"
 }
