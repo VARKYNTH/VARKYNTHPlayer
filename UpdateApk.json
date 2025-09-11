@@ -1,7 +1,7 @@
 {
-  "versionCode": 1210,
-  "versionName": "1.2.1.0 Stable",
-  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/Stable/NyxSound_Github_sign.apk",
-  "changelog": "•Исправлени ошибоки\n• Воспроизведение через media3 (современый API) \n• Изменены иконки (все) \n• Приложение работает стабильно исправлены все заметные ошибки и изменён немного дизайн так же изменено уведомление",
-  "sha256": "f136b2ecc1a6781273b0278af5bae04b792024c2a280e9ea3185c660c555d0c4"
+  "versionCode": 1211,
+  "versionName": "1.2.1.1 Stable",
+  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/Stable1/NyxSound_Github_sign.apk",
+  "changelog": "•Исправлени ошибоки\n• Добавлена полноценная рабочая поддержка эффектов",
+  "sha256": "d8bc31091c9b4764be192cd9449a8541f3b066ef5e20108381128701aec5233c"
 }
