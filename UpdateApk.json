@@ -1,5 +1,5 @@
 {
-  "versionCode": 1220,
+  "versionCode": 1221,
   "versionName": "1.2.2.1 Stable",
   "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/Stable2.1/NyxSound_Github_sign.apk",
   "changelog": "•Исправлени ошибоки\n•Исправлена ошибка эффектов\n° Добавлена поддержка Dolby Atmos и поддержка эффектов\n°Добавлена страница FX для управления эффектами\n°Обновоены некоторые библиотеки и добавлены разрешения для лучшей совместимости",
