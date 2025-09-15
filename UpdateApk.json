@@ -1,7 +1,7 @@
 {
-  "versionCode": 1211,
-  "versionName": "1.2.1.1 Stable",
-  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/Stable1/NyxSound_Github_sign.apk",
-  "changelog": "•Исправлени ошибоки\n• Добавлена полноценная рабочая поддержка эффектов",
-  "sha256": "d8bc31091c9b4764be192cd9449a8541f3b066ef5e20108381128701aec5233c"
+  "versionCode": 1220,
+  "versionName": "1.2.2.0 Stable",
+  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/Stable2/NyxSound_Github_sign.apk",
+  "changelog": "•Исправлени ошибоки\n• Добавлена поддержка Dolby Atmos и поддержка эффектов\n•Добавлена страница FX для управления эффектами\n•Обновоены некоторые библиотеки и добавлены разрешения для лучшей совместимости",
+  "sha256": "3b47c8f2640c57deb82377d568be29b1317739e6372cf5dd5323a21114ac80c4"
 }
