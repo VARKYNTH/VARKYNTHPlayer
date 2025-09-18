@@ -1,32 +1,32 @@
 <!-- ЛОГО -->
 <p align="center">
-  <img src="https://raw.githubusercontent.com/SYNORIX-Studios/NyxSound/main/logo.png" alt="NyxSound Logo" width="200"/>
+  <img src="https://raw.githubusercontent.com/VARKYNTH/VARKYNTH/main/logo.png" alt="VARKYNTH Logo" width="200"/>
 </p>
 
-<h1 align="center">NyxSound</h1>
+<h1 align="center">VARKYNTHPlayer</h1>
 
 <p align="center">
-  <a href="https://github.com/SYNORIX-Studios/NyxSound/stargazers">
-    <img src="https://img.shields.io/github/stars/SYNORIX-Studios/NyxSound?style=for-the-badge" alt="Stars"/>
+  <a href="https://github.com/VARKYNTH/VARKYNTHPlayer/stargazers">
+    <img src="https://img.shields.io/github/stars/VARKYNTH/NyxSound?style=for-the-badge" alt="Stars"/>
   </a>
-  <a href="https://github.com/SYNORIX-Studios/NyxSound/network/members">
-    <img src="https://img.shields.io/github/forks/SYNORIX-Studios/NyxSound?style=for-the-badge" alt="Forks"/>
+  <a href="https://github.com/SYNORIX-Studios/VARKYNTHPlayer/network/members">
+    <img src="https://img.shields.io/github/forks/VARKYNTH/VARKYNTH?style=for-the-badge" alt="Forks"/>
   </a>
-  <a href="https://github.com/SYNORIX-Studios/NyxSound/releases/latest">
-    <img src="https://img.shields.io/github/v/release/SYNORIX-Studios/NyxSound?style=for-the-badge" alt="Release"/>
+  <a href="https://github.com/VARKYNTH/VARKYNTHPlayer/releases/latest">
+    <img src="https://img.shields.io/github/v/release/VARKYNTH/VARKYNTHPlayer?style=for-the-badge" alt="Release"/>
   </a>
-  <a href="https://github.com/SYNORIX-Studios/NyxSound/releases">
-    <img src="https://img.shields.io/github/downloads/SYNORIX-Studios/NyxSound/total?style=for-the-badge" alt="Downloads"/>
+  <a href="https://github.com/VARKYNTH/VARKYNTHPlayer/releases">
+    <img src="https://img.shields.io/github/downloads/VARKYNTH/VARKYNTHPlayer/total?style=for-the-badge" alt="Downloads"/>
   </a>
-  <a href="https://github.com/SYNORIX-Studios/NyxSound/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/SYNORIX-Studios/NyxSound?style=for-the-badge" alt="License"/>
+  <a href="https://github.com/VARKYNTH/VARKYNTHPlayer/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/VARKYNTH/VARKYNTHPlayer?style=for-the-badge" alt="License"/>
   </a>
 </p>
 
 ---
 
 ## 📜 Описание (RU)
-**NyxSound** — это современный аудиоплеер с упором на максимально качественное воспроизведение музыки. Поддерживает Bit-perfect режим, автоматические обновления и показывает полную техническую информацию о звуке в реальном времени.
+**VARKYNTHPlayer** — это современный аудиоплеер с упором на максимально качественное воспроизведение музыки. Поддерживает Bit-perfect режим, автоматические обновления и показывает полную техническую информацию о звуке в реальном времени.
 
 ### ✨ Особенности:
 - 🎵 **Bit-perfect** воспроизведение для максимального качества звука
@@ -40,13 +40,13 @@
 ---
 
 ## 📥 Скачать (RU)
-[![Download latest release](https://img.shields.io/badge/📥_Скачать-последний релиз-brightgreen?style=for-the-badge)](https://github.com/SYNORIX-Studios/NyxSound/releases/latest)
+[![Download latest release](https://img.shields.io/badge/📥_Скачать-последний релиз-brightgreen?style=for-the-badge)](https://github.com/VARKYNTH/VARKYNTHPlayer/releases/latest)
 
 ---
 
 ## 📊 Статистика
-![GitHub stats](https://github-readme-stats.vercel.app/api?username=SYNORIX-Studios&repo=NyxSound&show_icons=true&theme=dark)
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=SYNORIX-Studios&layout=compact&theme=dark)
+![GitHub stats](https://github-readme-stats.vercel.app/api?username=VARKYNTH&repo=VARKYNTHPlayer&show_icons=true&theme=dark)
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=VARKYNTH&layout=compact&theme=dark)
 
 ---
 
@@ -54,5 +54,5 @@
 | Ресурс     | Ссылка |
 |------------|--------|
 | Telegram   | [Канал поддержки](https://t.me/SYNORIX_STUDIOS) |
-| Wiki       | [Документация](https://github.com/SYNORIX-Studios/NyxSound/wiki) |
+| Wiki       | [Документация](https://github.com/VARKYNTH/VARKYNTHPlayer/wiki) |
 | Website    | [Официальный сайт](https://synorix.wuaze.com/) |
