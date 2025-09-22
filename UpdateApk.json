@@ -1,7 +1,7 @@
 {
-  "versionCode": 1221,
-  "versionName": "1.2.2.1 Stable",
-  "apkUrl": "https://github.com/SYNORIX-Studios/NyxSound/releases/download/Stable2.1/NyxSound_Github_sign.apk",
-  "changelog": "•Исправлени ошибоки\n•Исправлена ошибка эффектов\n° Добавлена поддержка Dolby Atmos и поддержка эффектов\n°Добавлена страница FX для управления эффектами\n°Обновоены некоторые библиотеки и добавлены разрешения для лучшей совместимости",
-  "sha256": "887d849f09d7d9e5d76a3fcfba82375298a38083a85bf16582f5ab04e2cd4230"
+  "versionCode": 1222,
+  "versionName": "1.2.2.2 Stable",
+  "apkUrl": "https://github.com/VARKYNTH/VARKYNTHPlayer/releases/download/Stable2.2/VARKYNTH_Github_sign.apk",
+  "changelog": "•Исправлени ошибоки\n•Улучшена оптимизация и производительность",
+  "sha256": "8db7613cab7af43acfffcc51958ec0d8461846f1cad8601993919941730a7ba6"
 }
