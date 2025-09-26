@@ -1,7 +1,7 @@
 {
   "versionCode": 1223,
   "versionName": "1.2.2.3 Stable",
-  "changelog": "•Исправлени ошибоки\n•Улучшена оптимизация и производительность",
-  "apkUrl": "https://github.com/VARKYNTH/VARKYNTHPlayer/releases/download/Stable2.2/VARKYNTH_Github_sign.apk",
-  "sha256": "8db7613cab7af43acfffcc51958ec0d8461846f1cad8601993919941730a7ba6"
+  "changelog": "•Исправлени ошибоки\n•Улучшена оптимизация и производительность\n•Улучшен дизайн и изменена система поведения так же переделано много функций которые были на более стабильные и новые",
+  "apkUrl": "https://github.com/VARKYNTH/VARKYNTHPlayer/releases/download/Stable2.3/VARKYNTH_Github_sign.apk",
+  "sha256": "5ccc149b5ddb287ae08b834c324042f8fa35ac708989c553247b9162678e19e6"
 }
