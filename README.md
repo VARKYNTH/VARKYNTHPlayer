@@ -1,6 +1,6 @@
 <!-- ЛОГО -->
 <p align="center">
-  <img src="https://raw.githubusercontent.com/VARKYNTH/VARKYNTH/main/logo.png" alt="VARKYNTH Logo" width="200"/>
+  <img src="https://raw.githubusercontent.com/VARKYNTH/VARKYNTHPlayer/main/logo.png" alt="VARKYNTH Logo" width="200"/>
 </p>
 
 <h1 align="center">VARKYNTHPlayer</h1>
