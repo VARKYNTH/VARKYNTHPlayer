@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name" translatable="false">VARKYNTHPlayer</string>
+    <!-- texts -->
+    <string name="text_quick_settings">Дополнительные быстрые настройки</string>
+    <string name="text_quick_settings_button">Настройки</string>
+    <string name="set_language">Установить язык</string>
+    <string name="dismiss">Отмена</string>
+    <string name="ok">Ок</string>
+    <string name="donate">Донат</string>
+    <string name="update_text">Обновление</string>
+    <string name="delete">Удалить</string>
+    <string name="about">О Приложении</string>
+    <string name="gratitude">Благодарность по в кладу в проект</string>
+    <string name="developer_anna">Вклад Анны в разработку - дизайн</string>
+    <string name="developer_synorix">Вклад VARKYNTH в разработку - все остальное</string>
+    <string name="logupdate">Обновление журнала</string>
+    <string name="audio_settings">Настройки Аудио</string>
+    <string name="soon">Скоро...</string>
+    <string name="FX">FX</string>
+    
+    <string name="dialog_language_title">Выбрать язык</string>
+    <string name="dialog_language_english">Английский</string>
+    <string name="dialog_language_russian">Русский</string>
+</resources>
