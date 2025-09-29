@@ -25,34 +25,91 @@
 
 ---
 
-## 📜 Описание (RU)
-**VARKYNTHPlayer** — это современный аудиоплеер с упором на максимально качественное воспроизведение музыки. Поддерживает Bit-perfect режим, автоматические обновления и показывает полную техническую информацию о звуке в реальном времени.
+# VARKYNTH Player
 
-### ✨ Особенности:
-- 🎵 **Bit-perfect** воспроизведение для максимального качества звука
-- 📥 **Автообновления** — получение и установка новой версии прямо в приложении
-- 💖 **Окно доната** для поддержки разработчика
-- 🌐 **Смена языка** (Русский / English) прямо в настройках
-- 📊 Отображение **Hz**, **буфера** и **битности** в реальном времени
-- 🌙 Полностью **тёмная тема**
-- 📱 Минимальная нагрузка на устройство
+**VARKYNTH Player** is a modern and feature-rich music player for Android.  
+It provides high-quality local audio playback with advanced sound customization, a Material Design 3 interface, and system integration.  
 
 ---
 
-## 📥 Скачать (RU)
-[![Download latest release](https://img.shields.io/badge/📥_Скачать-последний релиз-brightgreen?style=for-the-badge)](https://github.com/VARKYNTH/VARKYNTHPlayer/releases/latest)
+## 🎵 Features
+
+- Local Music Playback – Play audio files stored on your device (MP3 and more).  
+- Playback Controls – Play, Pause, Next, Previous, Seek.  
+- Playback Modes – Shuffle, Repeat All, Repeat One.  
+- Audio Effects (FX) – Equalizer, Bass Boost, Reverb, Virtualizer, Loudness Enhancer.  
+- Modern UI – Material Design 3 with Material You dynamic colors (Android 12+).  
+- Now Playing Screen – Album art, metadata (artist, album, duration).  
+- Background Playback – With notification and lock screen controls.  
+- Media Session Integration – System-wide controls (Bluetooth, headset, car audio).  
+- Multilingual – English and Russian, switchable instantly.  
+- Update Checker – Notifies about new GitHub releases.  
+- About & Donate – Developer links and donation options.  
 
 ---
 
-## 📊 Статистика
-![GitHub stats](https://github-readme-stats.vercel.app/api?username=VARKYNTH&repo=VARKYNTHPlayer&show_icons=true&theme=dark)
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=VARKYNTH&layout=compact&theme=dark)
+## ⚙️ Technologies
+
+- Language: Java 11  
+- Minimum SDK: 24 (Android 7.0 Nougat)  
+- Target SDK: 33+  
+- UI: Material Components v1.14.0 (Material Design 3 + Dynamic Colors)  
+- Media: Jetpack Media3 (ExoPlayer), Android MediaPlayer, AudioManager  
+- AudioFX: Equalizer, BassBoost, Reverb, Virtualizer, DynamicsProcessing  
+- Libraries: AndroidX (AppCompat, RecyclerView, Core, Lifecycle, etc.)  
+- Tools: Android Studio (Gradle), Sketchware Pro (backup import).  
 
 ---
 
-## 🔗 Ссылки
-| Ресурс     | Ссылка |
-|------------|--------|
-| Telegram   | [Канал поддержки](https://t.me/SYNORIX_STUDIOS) |
-| Wiki       | [Документация](https://github.com/VARKYNTH/VARKYNTHPlayer/wiki) |
-| Website    | [Официальный сайт](https://synorix.wuaze.com/) |
+## 🚀 Installation
+
+### Android Studio
+```bash
+git clone https://github.com/yourusername/VARKYNTH-Player.git
+```
+1. Open the project in Android Studio.  
+2. Install Android SDK 33+ and Java 11+.  
+3. Build with **Build → Make Project**.  
+4. Run on a device or emulator.  
+5. Grant permission for media access at first launch.  
+
+### Sketchware Pro
+1. Copy `*.swb` into `/Sketchware/backups/projects`.  
+2. Import in Sketchware Pro.  
+3. Build and install APK.  
+
+---
+
+## 📱 Usage
+
+- Play Music – Select a track to start playback.  
+- Notification Controls – Manage playback from status bar/lock screen.  
+- Shuffle & Repeat – Toggle playback modes.  
+- Sound FX – Open FX screen, adjust equalizer and effects live.  
+- Language – Change to English or Russian in Settings.  
+- Updates – App notifies when a new version is released.  
+
+---
+
+## 📜 License
+
+Distributed under **[Specify License]**.  
+See `LICENSE` for details.  
+
+---
+
+## 👤 Authors
+
+- Developer: [VARKYNTH](https://t.me/VARKYNTH)  
+- UI/Design: [Anna](https://www.instagram.com/anna_love_you20)  
+
+---
+
+## 🤝 Contributing
+
+- Open issues for bugs/features.  
+- Submit pull requests for improvements.  
+
+---
+
+⭐ If you like this project, give it a star on GitHub!
