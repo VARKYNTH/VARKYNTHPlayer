@@ -137,7 +137,7 @@ public class VARTHFxActivity extends AppCompatActivity {
 	private void rebuildEqBands() {
 		if (!bound || service == null || v.eq_bands_container == null) return;
 		v.eq_bands_container.removeAllViews();
-		
+        
 		short bands = 0;
 		int[] range = new int[]{-1500, 1500};
 		try {
@@ -157,7 +157,7 @@ public class VARTHFxActivity extends AppCompatActivity {
 			s.setValueFrom(range[0]);
 			s.setValueTo(range[1]);
 			s.setStepSize(1f);
-			
+            
 			int cur = 0;
 			try { cur = service.getEqBandLevelSafe(b); } catch (Throwable ignored) {}
 			s.setValue(cur);

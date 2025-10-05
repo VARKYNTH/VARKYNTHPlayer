@@ -108,14 +108,17 @@ public final class VARTHEffectsManager {
                 boolean en = p.getBoolean("eq_enabled", false);
                 eq.setEnabled(en);
                 int preset = p.getInt("eq_preset", -1);
-                if (preset >= 0) eq.usePreset((short)preset);
-                try {
-                    short bands = eq.getNumberOfBands();
-                    for (short b=0;b<bands;b++) {
-                        int lvl = p.getInt("eq_band_"+b, 0);
-                        eq.setBandLevel(b, (short)lvl);
-                    }
-                } catch (Throwable ignored) {}
+if (preset >= 0) {
+    eq.usePreset((short)preset);
+} else {
+    try {
+        short bands = eq.getNumberOfBands();
+        for (short b=0;b<bands;b++) {
+            int lvl = p.getInt("eq_band_"+b, 0);
+            eq.setBandLevel(b, (short)lvl);
+        }
+    } catch (Throwable ignored) {}
+}
             }
         } catch (Throwable ignored) {}
         try { if (dolbyEffect!=null){ boolean on=p.getBoolean("dolby_enabled",false); dolbyEffect.setEnabled(on);} } catch (Throwable ignored) {}
@@ -169,11 +172,19 @@ public final class VARTHEffectsManager {
         } catch (Throwable t){ return new String[0]; }
     }
     public void useEqPresetSafe(int idx){
+    try {
+        if (eq!=null) eq.usePreset((short)idx);
+        SharedPreferences p = ctx.getSharedPreferences(VARTHConstants.FX_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor ed = p.edit().putInt("eq_preset", idx);
         try {
-            if (eq!=null) eq.usePreset((short)idx);
-            ctx.getSharedPreferences(VARTHConstants.FX_PREFS, Context.MODE_PRIVATE).edit().putInt("eq_preset", idx).apply();
+            if (eq!=null) {
+                short bands = eq.getNumberOfBands();
+                for (short b=0;b<bands;b++) ed.remove("eq_band_"+b);
+            }
         } catch (Throwable ignored) {}
-    }
+        ed.apply();
+    } catch (Throwable ignored) {}
+}
     public short getEqNumberOfBandsSafe(){ try { return eq!=null ? eq.getNumberOfBands() : 0; } catch (Throwable t){ return 0; } }
     public int[] getEqBandLevelRangeSafe(){
         try { if (eq==null) return new int[]{-1500,1500}; short[] r=eq.getBandLevelRange(); return new int[]{r[0], r[1]}; }
@@ -185,9 +196,13 @@ public final class VARTHEffectsManager {
     }
     public int getEqBandLevelSafe(short band){ try { return eq!=null ? eq.getBandLevel(band) : 0; } catch (Throwable t){ return 0; } }
     public void setEqBandLevelSafe(short band, short level){
-        try {
-            if (eq!=null) eq.setBandLevel(band, level);
-            ctx.getSharedPreferences(VARTHConstants.FX_PREFS, Context.MODE_PRIVATE).edit().putInt("eq_band_"+band, level).apply();
-        } catch (Throwable ignored) {}
-    }
+    try {
+        if (eq!=null) eq.setBandLevel(band, level);
+        ctx.getSharedPreferences(VARTHConstants.FX_PREFS, Context.MODE_PRIVATE)
+          .edit()
+          .putInt("eq_band_"+band, level)
+          .putInt("eq_preset", -1)   // <- добавь это
+          .apply();
+    } catch (Throwable ignored) {}
+}
 }
