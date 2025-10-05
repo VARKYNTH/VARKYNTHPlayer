@@ -131,10 +131,6 @@ public class MainActivity extends AppCompatActivity {
 	
 	private AudioManager audioManager;
 	
-	// URL JSON с информацией об обновлении
-	private static final String UPDATE_JSON =
-	"https://raw.githubusercontent.com/VARKYNTH/VARKYNTHPlayer/main/UpdateApk.json";
-	
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
@@ -277,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
 		v.topbarmain.setVisibility(View.VISIBLE);
 		myPermissions();
 		getAllSongs();
-		startUpdateCheck();
+VARTHUpdate.startUpdateCheck(this);
         SynStyle();
 	}
 	
@@ -293,308 +289,6 @@ public class MainActivity extends AppCompatActivity {
 		Configuration config = new Configuration();
 		config.setLocale(locale);
 		getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-	}
-	
-	/**
-* Тихая проверка: если апдейт есть — показываем ТОЛЬКО твой диалог (разметка dialog_update.xml).
-* Если апдейта нет или произошла ошибка — НИЧЕГО не показываем и не меняем UI.
-*/	
-	private void startUpdateCheck() {
-		new Thread(() -> {
-			try {
-				Info info = fetchInfo(); // твой метод
-				if (info == null) return;
-				
-				int current = getCurrentVersionCode(MainActivity.this);
-				boolean newer = info.versionCode > current;
-				
-				if (newer) {
-					runOnUiThread(() -> showUpdateDialogFromXml(info));
-				}
-				// если не новее — ничего не делаем и молчим
-			} catch (Throwable ignored) {
-				// тихий режим: не трогаем UI и не показываем ошибок
-			}
-		}).start();
-	}
-	
-	/**
-* ВАЖНО: твоя разметка диалога должна быть res/layout/dialog_update.xml
-* и содержать элементы с id:
-*   @+id/tvTitle      (TextView)
-*   @+id/tvChangelog  (TextView, можно внутри ScrollView)
-*   @+id/btnLater     (Button/TextView)
-*   @+id/btnUpdate    (Button/TextView)
-*
-* Этот метод лишь "надул" и повесил обработчики: "Позже" закрывает диалог,
-* "Обновить" запускает существующую логику загрузки/установки.
-*/	
-	private void showUpdateDialogFromXml(@NonNull Info info) {
-		try {
-			LayoutInflater inflater = LayoutInflater.from(this);
-			View view = inflater.inflate(R.layout.dialog_update, null, false);
-			
-			TextView tvDlgTitle     = view.findViewById(R.id.tvTitle);
-			TextView tvDlgChangelog = view.findViewById(R.id.tvChangelog);
-			View btnLaterView       = view.findViewById(R.id.btnLater);
-			View btnUpdateView      = view.findViewById(R.id.btnUpdate);
-			
-			if (tvDlgTitle != null) tvDlgTitle.setText("Доступна версия " + (info.versionName == null ? "" : info.versionName));
-			if (tvDlgChangelog != null) tvDlgChangelog.setText(info.changelog == null ? "" : info.changelog.trim());
-			
-			androidx.appcompat.app.AlertDialog dlg =
-			new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
-			.setView(view)
-			.setCancelable(true)
-			.create();
-			
-			if (btnLaterView != null) {
-				btnLaterView.setOnClickListener(v -> { try { dlg.dismiss(); } catch (Exception ignored) {} });
-			}
-			
-			if (btnUpdateView != null) {
-				btnUpdateView.setOnClickListener(v -> {
-					btnUpdateView.setEnabled(false);
-					if (btnUpdateView instanceof TextView) ((TextView) btnUpdateView).setText("Загрузка…");
-					
-					if (!ensureUnknownSourcesAllowed(MainActivity.this)) {
-						Toast.makeText(MainActivity.this,
-						"Разрешите установку из неизвестных источников и нажмите «Обновить» снова",
-						Toast.LENGTH_LONG).show();
-						btnUpdateView.setEnabled(true);
-						if (btnUpdateView instanceof TextView) ((TextView) btnUpdateView).setText("Обновить");
-						return;
-					}
-					
-					downloadAndInstall(MainActivity.this, info.apkUrl, new OnInstallCallback() {
-						@Override public void onDownloadComplete() {
-							runOnUiThread(() -> {
-								try { dlg.dismiss(); } catch (Exception ignored) {}
-								Toast.makeText(MainActivity.this, "Установка…", Toast.LENGTH_SHORT).show();
-							});
-						}
-						
-						@Override public void onError(String msg) {
-							runOnUiThread(() -> {
-								btnUpdateView.setEnabled(true);
-								if (btnUpdateView instanceof TextView) ((TextView) btnUpdateView).setText("Обновить");
-								Toast.makeText(MainActivity.this,
-								msg == null ? "Ошибка загрузки" : msg,
-								Toast.LENGTH_LONG).show();
-							});
-						}
-					});
-				});
-			}
-			
-			dlg.show();
-		} catch (Throwable ignored) {
-			// тихо игнорируем
-		}
-	}
-	// ---------- ВСПОМОГАТЕЛЬНОЕ ----------
-	private static TextView makeButton(Context ctx, String text, int bgColor, int strokeColor) {
-		TextView tv = new TextView(ctx);
-		tv.setText(text);
-		tv.setTextColor(Color.WHITE);
-		tv.setTextSize(16);
-		tv.setTypeface(Typeface.DEFAULT_BOLD);
-		tv.setPadding(50, 20, 50, 20);
-		tv.setGravity(Gravity.CENTER);
-		
-		GradientDrawable gd = new GradientDrawable();
-		gd.setCornerRadius(25);
-		gd.setColor(bgColor);
-		if (strokeColor != Color.TRANSPARENT) gd.setStroke(2, strokeColor);
-		tv.setBackground(gd);
-		return tv;
-	}
-	
-	private interface OnInstallCallback {
-		void onDownloadComplete();
-		void onError(String msg);
-	}
-	
-	private static class Info {
-		int versionCode;
-		String versionName;
-		String apkUrl;
-		String changelog;
-	}
-	
-	private static int getCurrentVersionCode(Context ctx) {
-		try {
-			PackageInfo pi = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0);
-			if (Build.VERSION.SDK_INT >= 28) return (int) pi.getLongVersionCode();
-			return pi.versionCode;
-		} catch (Exception e) {
-			return 0;
-		}
-	}
-	
-	/**
-* Оригинальная реализация fetchInfo() из твоего файла — использует UPDATE_JSON константу.
-* Возвращает Info или выбрасывает исключение.
-*/	
-	private static Info fetchInfo() throws Exception {
-		HttpURLConnection c = null;
-		BufferedReader br = null;
-		try {
-			URL url = new URL(UPDATE_JSON);
-			c = (HttpURLConnection) url.openConnection();
-			c.setConnectTimeout(10000);
-			c.setReadTimeout(15000);
-			c.setRequestProperty("User-Agent", "VARKYNTH-Updater");
-			
-			br = new BufferedReader(new InputStreamReader(new BufferedInputStream(c.getInputStream())));
-			StringBuilder sb = new StringBuilder();
-			String line; while ((line = br.readLine()) != null) sb.append(line);
-			
-			JSONObject j = new JSONObject(sb.toString());
-			Info i = new Info();
-			i.versionCode = j.optInt("versionCode", 0);
-			i.versionName = j.optString("versionName", "");
-			i.apkUrl      = j.optString("apkUrl", "");
-			i.changelog   = j.optString("changelog", "");
-			if (i.apkUrl == null || i.apkUrl.isEmpty()) {
-				throw new IllegalStateException("apkUrl пустой");
-			}
-			return i;
-		} finally {
-			try { if (br != null) br.close(); } catch (Exception ignore) {}
-			if (c != null) c.disconnect();
-		}
-	}
-	
-	// Android 8+: просим разрешение до начала загрузки
-	private static boolean ensureUnknownSourcesAllowed(Activity act) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			boolean can = act.getPackageManager().canRequestPackageInstalls();
-			if (!can) {
-				Intent i = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
-				Uri.parse("package:" + act.getPackageName()));
-				act.startActivity(i);
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	// Скачиваем APK и запускаем установку: broadcast + резервный опрос статуса
-	private static void downloadAndInstall(Activity act, String apkUrl, OnInstallCallback cb) {
-		try {
-			final Context appCtx = act.getApplicationContext();
-			final DownloadManager dm = (DownloadManager) appCtx.getSystemService(Context.DOWNLOAD_SERVICE);
-			
-			File dir = appCtx.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-			if (dir != null && !dir.exists()) dir.mkdirs();
-			final File apk = new File(dir, "VARKYNTHPlayer_update.apk");
-			if (apk.exists()) try { apk.delete(); } catch (Exception ignore) {}
-			
-			DownloadManager.Request req = new DownloadManager.Request(Uri.parse(apkUrl));
-			req.setTitle("VARKYNTHPlayer — обновление");
-			req.setDescription("Загрузка APK…");
-			req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-			req.setDestinationInExternalFilesDir(appCtx, Environment.DIRECTORY_DOWNLOADS, "nyxsound_update.apk");
-			req.setMimeType("application/vnd.android.package-archive");
-			
-			final long downloadId = dm.enqueue(req);
-			
-			final BroadcastReceiver r = new BroadcastReceiver() {
-				@Override public void onReceive(Context c, Intent intent) {
-					long done = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-					if (done != downloadId) return;
-					try {
-						startInstall(appCtx, dm, downloadId, apk);
-						if (cb != null) cb.onDownloadComplete();
-					} catch (Exception e) {
-						if (cb != null) cb.onError(e.getMessage());
-					}
-					try { appCtx.unregisterReceiver(this); } catch (Exception ignore) {}
-				}
-			};
-			IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
-			if (Build.VERSION.SDK_INT >= 33) {
-				appCtx.registerReceiver(r, filter, Context.RECEIVER_NOT_EXPORTED);
-			} else {
-				appCtx.registerReceiver(r, filter);
-			}
-			
-			// Фоновая проверка статуса (резервный механизм)
-			new Thread(() -> {
-				try {
-					boolean finished = false;
-					while (!finished) {
-						DownloadManager.Query q = new DownloadManager.Query().setFilterById(downloadId);
-						try (android.database.Cursor cur = dm.query(q)) {
-							if (cur != null && cur.moveToFirst()) {
-								int status = cur.getInt(cur.getColumnIndexOrThrow(DownloadManager.COLUMN_STATUS));
-								if (status == DownloadManager.STATUS_SUCCESSFUL) {
-									try {
-										startInstall(appCtx, dm, downloadId, apk);
-										if (cb != null) cb.onDownloadComplete();
-									} catch (Exception e) {
-										if (cb != null) cb.onError(e.getMessage());
-									}
-									finished = true;
-									try { appCtx.unregisterReceiver(r); } catch (Exception ignore) {}
-								} else if (status == DownloadManager.STATUS_FAILED) {
-									if (cb != null) cb.onError("Загрузка не удалась");
-									finished = true;
-									try { appCtx.unregisterReceiver(r); } catch (Exception ignore) {}
-								}
-							}
-						}
-						if (!finished) try { Thread.sleep(800); } catch (InterruptedException ignored) {}
-					}
-				} catch (Exception ignored) {}
-			}).start();
-			
-		} catch (Exception e) {
-			if (cb != null) cb.onError(e.getMessage());
-		}
-	}
-	
-	// Надёжный старт системного установщика
-	private static void startInstall(Context appCtx, DownloadManager dm, long downloadId, File fallbackApk) throws Exception {
-		Uri uri = null;
-		try { uri = dm.getUriForDownloadedFile(downloadId); } catch (Exception ignore) {}
-		if (uri == null) {
-			uri = FileProvider.getUriForFile(appCtx,
-			appCtx.getPackageName() + ".fileprovider", fallbackApk);
-		}
-		Intent install = new Intent(Intent.ACTION_INSTALL_PACKAGE);
-		install.setData(uri);
-		install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
-		install.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
-		install.putExtra(Intent.EXTRA_RETURN_RESULT, true);
-		appCtx.startActivity(install);
-	}
-	
-	private boolean isNetworkAvailable() {
-		try {
-			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-			if (cm == null) return true;
-			NetworkInfo ni = cm.getActiveNetworkInfo();
-			return ni != null && ni.isConnected();
-		} catch (Exception ignored) {
-			return true;
-		}
-	}
-	
-	@Nullable
-	private static String readFully(@Nullable InputStream is) throws Exception {
-		if (is == null) return null;
-		BufferedInputStream bis = new BufferedInputStream(is);
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		byte[] buf = new byte[8192];
-		int n;
-		while ((n = bis.read(buf)) >= 0) bos.write(buf, 0, n);
-		return bos.toString("UTF-8");
-	}
-	
-	private static String safe(@Nullable String s) {
-		return s == null ? "" : s;
 	}
 	
 	@Override
@@ -937,59 +631,85 @@ public class MainActivity extends AppCompatActivity {
 	
 	public void recive() {
 	}
-	private BroadcastReceiver SongDataReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			total = intent.getStringExtra("total_duration");
-			position = intent.getStringExtra("current_duration");
-			song_name = intent.getStringExtra("song");
-			path = intent.getStringExtra("path");
-			songPosition = Double.parseDouble(intent.getStringExtra("pos"));
-			v.slider_music.setValueTo((int) Double.parseDouble(total));
-			v.slider_music.setValue((int) Double.parseDouble(position));
-			getMusicTime(v.timestart, Double.parseDouble(position));
-			getMusicTime(v.timeoff, Double.parseDouble(total));
-			v.name_music.setText(song_name);
-			v.name_music_player.setText(song_name);
-			SynMusic.edit().putString("path", path).commit();
-		}
-	};
-	private BroadcastReceiver SongStateReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			state = intent.getStringExtra("responce");
-			if (state.equals("pause")) {
-				v.ic_play_click.setImageResource(R.drawable.ic_play);
-				SynMusic.edit().putString("p", "pause").commit();
-			} else {
-				if (state.equals("play")) {
-					SynMusic.edit().putString("p", "play").commit();
-					v.ic_play_click.setImageResource(R.drawable.ic_pause);
-					SynTimer = new TimerTask() {
-						@Override
-						public void run() {
-							runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-									v.duration_music.setText(SynMusic.getString("path", ""));
-									v.duration_music.setSingleLine(true);
-									v.duration_music.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-									v.duration_music.setSelected(true);
-									v.name_duration_player.setText(SynMusic.getString("path", ""));
-									v.name_duration_player.setSingleLine(true);
-									v.name_duration_player.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-									v.name_duration_player.setSelected(true);
-									reflesh();
-								}
-							});
-						}
-					};
-					_timer.schedule(SynTimer, (int)(80));
-				}
-			}
-		} };
-	{
-	}
+	// ==== Utils ====
+private static String safeGetString(Intent i, String key) {
+    String v = i != null ? i.getStringExtra(key) : null;
+    return v != null ? v : "";
+}
+private static int getIntOrStringAsInt(Intent i, String key, int def) {
+    if (i == null || i.getExtras() == null) return def;
+    Object o = i.getExtras().get(key);
+    if (o instanceof Integer) return (Integer) o;
+    if (o instanceof Long)    return (int) (long) (Long) o;
+    if (o instanceof String) {
+        String s = ((String) o).trim();
+        if (!s.isEmpty()) {
+            try { return (int) Math.round(Double.parseDouble(s)); }
+            catch (NumberFormatException ignore) {}
+        }
+    }
+    return def;
+}
+
+// ==== Receiver: song data ====
+private BroadcastReceiver SongDataReceiver = new BroadcastReceiver() {
+    @Override public void onReceive(Context context, Intent intent) {
+        int totalMs   = getIntOrStringAsInt(intent, "total_duration", 0);
+        int currentMs = getIntOrStringAsInt(intent, "current_duration", 0);
+        int pos       = getIntOrStringAsInt(intent, "pos", -1);
+
+        song_name = safeGetString(intent, "song");
+        path      = safeGetString(intent, "path");
+        songPosition = pos; // если нужно double: songPosition = (double) pos;
+
+        v.slider_music.setValueTo(totalMs);
+        v.slider_music.setValue(currentMs);
+
+        getMusicTime(v.timestart, currentMs);
+        getMusicTime(v.timeoff,  totalMs);
+
+        v.name_music.setText(song_name);
+        v.name_music_player.setText(song_name);
+
+        SynMusic.edit().putString("path", path).apply();
+    }
+};
+
+// ==== Receiver: play/pause state ====
+private BroadcastReceiver SongStateReceiver = new BroadcastReceiver() {
+    @Override public void onReceive(Context context, Intent intent) {
+        String s = safeGetString(intent, "responce");
+        if ("pause".equalsIgnoreCase(s)) {
+            v.ic_play_click.setImageResource(R.drawable.ic_play);
+            SynMusic.edit().putString("p", "pause").apply();
+            return;
+        }
+        if ("play".equalsIgnoreCase(s)) {
+            SynMusic.edit().putString("p", "play").apply();
+            v.ic_play_click.setImageResource(R.drawable.ic_pause);
+
+            SynTimer = new TimerTask() {
+                @Override public void run() {
+                    runOnUiThread(() -> {
+                        String pth = SynMusic.getString("path", "");
+                        v.duration_music.setText(pth);
+                        v.duration_music.setSingleLine(true);
+                        v.duration_music.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+                        v.duration_music.setSelected(true);
+
+                        v.name_duration_player.setText(pth);
+                        v.name_duration_player.setSingleLine(true);
+                        v.name_duration_player.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+                        v.name_duration_player.setSelected(true);
+
+                        reflesh();
+                    });
+                }
+            };
+            _timer.schedule(SynTimer, 80);
+        }
+    }
+};
 	
 	public class Recyclerview1Adapter extends RecyclerView.Adapter<Recyclerview1Adapter.ViewHolder> {
 		ArrayList<HashMap<String, Object>> _data;

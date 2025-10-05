@@ -96,7 +96,7 @@ public final class AllId {
 		
 		public final LinearLayout topbarmain;
 		public final FrameLayout content_root;
-		public final LinearLayout player_root;
+		public final FrameLayout player_root;
 		public final RecyclerView music_view;
 		public final com.google.android.material.card.MaterialCardView player_card;
 		public final TextView name_music;

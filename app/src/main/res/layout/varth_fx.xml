@@ -29,7 +29,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="0dp"
+                android:paddingTop="8dp"
                 android:background="?colorSurface"
                 android:gravity="bottom"
                 android:orientation="vertical"
@@ -43,7 +43,6 @@
                     android:text="@string/audio_settings"
                     android:textSize="16sp" />
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardview_fx"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:contentPadding="8dp"

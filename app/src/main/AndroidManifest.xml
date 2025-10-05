@@ -397,10 +397,20 @@ android:preserveLegacyExternalStorage="true"
 <uses-library
 			android:name="android.media.dolby"
 			android:required="false" />
+            
 <service android:name=".VARTHMusicService" 
 android:foregroundServiceType="mediaPlayback"
 android:exported="true"
 android:enabled="true"/>
+
+<receiver
+    android:name=".MediaButtonReceiver"
+    android:exported="false">
+    <intent-filter>
+        <action android:name="android.intent.action.MEDIA_BUTTON"/>
+    </intent-filter>
+</receiver>
+    
 <provider
     android:name="androidx.core.content.FileProvider"
     android:authorities="com.VARKYNTH.Player.fileprovider"
