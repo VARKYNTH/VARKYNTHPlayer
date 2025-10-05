@@ -41,7 +41,6 @@ public class VARTHMusicService extends Service {
 		}
 	};
 	
-	
 	private final BroadcastReceiver toggleReceiver = new BroadcastReceiver() {
 		@Override public void onReceive(Context context, Intent intent) {
 			if (core == null) return;
@@ -66,6 +65,7 @@ public class VARTHMusicService extends Service {
 	
 	@Override public void onCreate() {
 		super.onCreate();
+		
 		af = (AudioManager) getSystemService(AUDIO_SERVICE);
 		
 		reg(toggleReceiver, new IntentFilter(BR_SONG_CONTROL));
