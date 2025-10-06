@@ -190,7 +190,6 @@ public class VARTHFxActivity extends AppCompatActivity {
 	@Override
 	public void onStop() {
 		super.onStop();
-        com.VARKYNTH.Player.ui.VGlobalDepth.detach();
 		if (bound) {
 			unbindService(conn);
 			bound = false;

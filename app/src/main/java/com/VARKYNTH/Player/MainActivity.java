@@ -337,7 +337,6 @@ public class MainActivity extends AppCompatActivity {
 		Intent stopIntent = new Intent(MainActivity.this, VARTHMusicService.class);
 		stopIntent.setAction("STOP");
 		startService(stopIntent);
-		com.VARKYNTH.Player.ui.VGlobalDepth.detach();
 	}
 	public void reflesh() {
 		if (v.music_view.getAdapter() != null) v.music_view.getAdapter().notifyDataSetChanged();
