@@ -10,6 +10,8 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import android.content.SharedPreferences;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -23,6 +25,7 @@ import java.util.Objects;
 
 import com.VARKYNTH.Player.info.VFont;
 import com.VARKYNTH.Player.info.AllId;
+import com.VARKYNTH.Player.ui.VGlobalDepth;
 
 public class VARTHFxActivity extends AppCompatActivity {
 	
@@ -32,7 +35,13 @@ public class VARTHFxActivity extends AppCompatActivity {
 	private boolean suppressFxUiEvents = false;
 	
 	private AllId.FxViewId v;
+    
+    private SharedPreferences prefs;
+    
+    private boolean depthApplied = false;
 	
+    private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
+    
 	private final android.content.ServiceConnection conn = new android.content.ServiceConnection() {
 		@Override public void onServiceConnected(android.content.ComponentName name, android.os.IBinder binder) {
 			VARTHMusicService.MusicBinder b = (VARTHMusicService.MusicBinder) binder;
@@ -50,7 +59,15 @@ public class VARTHFxActivity extends AppCompatActivity {
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.varth_fx);
         
-        com.VARKYNTH.Player.ui.VGlobalDepth.attach(this);
+        prefs = getSharedPreferences("vplayer_prefs", MODE_PRIVATE);
+
+        applyDepthFromPrefs();
+
+        // Живое обновление при смене настройки в SettingsActivity
+        prefListener = (sp, key) -> {
+            if ("global_depth_enabled".equals(key)) applyDepthFromPrefs();
+        };
+        prefs.registerOnSharedPreferenceChangeListener(prefListener);
 		
 		VFont.boldAll(this, findViewById(android.R.id.content));
 		
@@ -183,6 +200,7 @@ public class VARTHFxActivity extends AppCompatActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
+        applyDepthFromPrefs();
 		// НИЧЕГО не стартуем, просто привязываемся
 		bindService(new Intent(this, VARTHMusicService.class), conn, Context.BIND_AUTO_CREATE);
 	}
@@ -190,10 +208,25 @@ public class VARTHFxActivity extends AppCompatActivity {
 	@Override
 	public void onStop() {
 		super.onStop();
+        prefs.unregisterOnSharedPreferenceChangeListener(prefListener);
+        if (depthApplied) {
+            VGlobalDepth.detach();
+            depthApplied = false;
+        }
 		if (bound) {
 			unbindService(conn);
 			bound = false;
 		}
 	}
+    private void applyDepthFromPrefs() {
+        boolean enabled = prefs.getBoolean("global_depth_enabled", false); // default OFF
+        if (enabled && !depthApplied) {
+            VGlobalDepth.attach(this);   // включить эффект
+            depthApplied = true;
+        } else if (!enabled && depthApplied) {
+            VGlobalDepth.detach();       // выключить эффект
+            depthApplied = false;
+        }
+    }
 	
 }

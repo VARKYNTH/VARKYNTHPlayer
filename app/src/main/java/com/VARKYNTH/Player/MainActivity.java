@@ -85,6 +85,30 @@ import java.util.TimerTask;
 import com.VARKYNTH.Player.info.VFont;
 import com.VARKYNTH.Player.info.AllId;
 
+import android.transition.TransitionManager;
+import android.transition.Fade;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.LruCache;
+
+import java.io.InputStream;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import android.content.ContentUris;
+
+import android.provider.MediaStore;
+import android.provider.BaseColumns;
+import android.database.Cursor;
+import android.content.IntentSender;
+import androidx.activity.result.IntentSenderRequest;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import android.content.ContentUris;
+
+import com.VARKYNTH.Player.ui.VGlobalDepth;
+
 public class MainActivity extends AppCompatActivity {
 	
 	private Timer _timer = new Timer();
@@ -108,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
 	private SharedPreferences SynMusic;
 	private Intent SynIntent = new Intent();
 	
+	private ExecutorService artExecutor = Executors.newFixedThreadPool(2);
+	private LruCache<Long, Bitmap> artCache;
+	
 	private final ActivityResultLauncher<String[]> requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), permission ->{ 
 		
 		boolean allGranted = true; for (Boolean isGranted : permission.values()){ 
@@ -130,13 +157,49 @@ public class MainActivity extends AppCompatActivity {
 	private AllId.MainViewId v;
 	
 	private AudioManager audioManager;
+    
+    private SharedPreferences prefs;
+	
+	// поле класса
+	private ActivityResultLauncher<IntentSenderRequest> deleteRequestLauncher;
+    
+    private int pendingDeletePos = -1;
+    
+    private boolean depthApplied = false;
+    
+    private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
 	
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.main);
-        
-		com.VARKYNTH.Player.ui.VGlobalDepth.attach(this);
+		
+		int maxMem = (int) (Runtime.getRuntime().maxMemory() / 1024);
+		int cacheSize = maxMem / 16; // ~6% памяти под мини-обложки
+		artCache = new LruCache<Long, Bitmap>(cacheSize) {
+			@Override protected int sizeOf(Long key, Bitmap value) {
+				return value.getByteCount() / 1024;
+			}
+		};
+		
+		// в onCreate(), после setContentView(...)
+		deleteRequestLauncher = registerForActivityResult(
+		new ActivityResultContracts.StartIntentSenderForResult(),
+		result -> {
+			// Если нужно — перезагрузи список/уведомь адаптер
+			v.music_view.getAdapter().notifyDataSetChanged();
+		}
+		);
+		
+		prefs = getSharedPreferences("vplayer_prefs", MODE_PRIVATE);
+
+        applyDepthFromPrefs();
+
+        // Живое обновление при смене настройки в SettingsActivity
+        prefListener = (sp, key) -> {
+            if ("global_depth_enabled".equals(key)) applyDepthFromPrefs();
+        };
+        prefs.registerOnSharedPreferenceChangeListener(prefListener);
 		
 		VFont.boldAll(this, findViewById(android.R.id.content));
 		
@@ -270,13 +333,149 @@ public class MainActivity extends AppCompatActivity {
 		con = this;
 		v.music_view.setLayoutManager(new LinearLayoutManager(this));
 		v.music_view.setAdapter(new Recyclerview1Adapter(song_list));
-		v.player_root.setVisibility(View.GONE);
-		v.content_root.setVisibility(View.VISIBLE);
-		v.topbarmain.setVisibility(View.VISIBLE);
+		v.music_view.setHasFixedSize(true);
+		v.music_view.setItemViewCacheSize(20);
+		togglePlayerView(false);
 		myPermissions();
 		getAllSongs();
 		VARTHUpdate.startUpdateCheck(this);
 		SynStyle();
+	}
+    
+    private void applyDepthFromPrefs() {
+        boolean enabled = prefs.getBoolean("global_depth_enabled", false); // default OFF
+        if (enabled && !depthApplied) {
+            VGlobalDepth.attach(this);   // включить эффект
+            depthApplied = true;
+        } else if (!enabled && depthApplied) {
+            VGlobalDepth.detach();       // выключить эффект
+            depthApplied = false;
+        }
+    }
+	
+	private int dp(int v) {
+		float d = getResources().getDisplayMetrics().density;
+		return Math.round(v * d);
+	}
+	
+	private void loadAlbumArtAsync(ImageView target, long albumId) {
+		if (albumId <= 0) {
+			target.setImageResource(R.drawable.ic_logo);
+			return;
+		}
+		target.setTag(albumId);
+		
+		Bitmap cached = artCache.get(albumId);
+		if (cached != null) {
+			target.setImageBitmap(cached);
+			return;
+		}
+		
+		// placeholder сразу, чтобы не было «пустых» иконок
+		target.setImageResource(R.drawable.ic_logo);
+		
+		artExecutor.submit(() -> {
+			try {
+				Uri base = Uri.parse("content://media/external/audio/albumart");
+				Uri uri = android.content.ContentUris.withAppendedId(base, albumId);
+				
+				// пробуем прочитать и даунсемплить
+				BitmapFactory.Options bounds = new BitmapFactory.Options();
+				InputStream is1 = getContentResolver().openInputStream(uri);
+				if (is1 == null) return;
+				bounds.inJustDecodeBounds = true;
+				BitmapFactory.decodeStream(is1, null, bounds);
+				is1.close();
+				
+				int req = dp(56); // целевой размер иконки ~56dp
+				int sample = 1;
+				while ((bounds.outWidth / sample) > req * 2 || (bounds.outHeight / sample) > req * 2) {
+					sample *= 2;
+				}
+				
+				BitmapFactory.Options opts = new BitmapFactory.Options();
+				opts.inSampleSize = sample;
+				InputStream is2 = getContentResolver().openInputStream(uri);
+				if (is2 == null) return;
+				Bitmap bmp = BitmapFactory.decodeStream(is2, null, opts);
+				is2.close();
+				
+				if (bmp != null) {
+					artCache.put(albumId, bmp);
+					runOnUiThread(() -> {
+						Object tag = target.getTag();
+						if (tag instanceof Long && ((Long) tag) == albumId) {
+							target.setImageBitmap(bmp);
+						}
+					});
+				}
+			} catch (Exception ignore) {
+				// нет обложки — оставим placeholder
+			}
+		});
+	}
+	
+	/** Удалить по MediaStore _ID (предпочтительно). */
+	private void deleteTrackById(long audioId, int adapterPositionOrMinusOne) {
+		Uri itemUri = ContentUris.withAppendedId(
+		MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, audioId);
+		try {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+				ArrayList<Uri> uris = new ArrayList<>();
+				uris.add(itemUri);
+				IntentSender sender = MediaStore.createDeleteRequest(
+				getContentResolver(), uris).getIntentSender();
+				deleteRequestLauncher.launch(
+				new IntentSenderRequest.Builder(sender).build());
+			} else {
+				int rows = getContentResolver().delete(itemUri, null, null);
+				if (rows > 0) {
+					if (adapterPositionOrMinusOne >= 0 &&
+					adapterPositionOrMinusOne < song_list.size()) {
+						song_list.remove(adapterPositionOrMinusOne);
+						v.music_view.getAdapter().notifyItemRemoved(adapterPositionOrMinusOne);
+					} else {
+						v.music_view.getAdapter().notifyDataSetChanged();
+					}
+				}
+			}
+		} catch (Exception ignored) {}
+	}
+	
+	/** Если у тебя только абсолютный путь к файлу. */
+	private void deleteTrackByPath(String absolutePath, int adapterPositionOrMinusOne) {
+		String[] projection = { BaseColumns._ID };
+		try (Cursor c = getContentResolver().query(
+		MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+		projection,
+		MediaStore.Audio.Media.DATA + " = ?",
+		new String[]{ absolutePath },
+		null)) {
+			if (c != null && c.moveToFirst()) {
+				long id = c.getLong(0);
+				deleteTrackById(id, adapterPositionOrMinusOne);
+			} else {
+				java.io.File f = new java.io.File(absolutePath);
+				if (f.exists() && f.delete()) {
+					if (adapterPositionOrMinusOne >= 0 &&
+					adapterPositionOrMinusOne < song_list.size()) {
+						song_list.remove(adapterPositionOrMinusOne);
+						v.music_view.getAdapter().notifyItemRemoved(adapterPositionOrMinusOne);
+					} else {
+						v.music_view.getAdapter().notifyDataSetChanged();
+					}
+					sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(f)));
+				}
+			}
+		} catch (Exception ignored) {}
+	}
+	
+	private void togglePlayerView(boolean showPlayer) {
+		ViewGroup root = findViewById(android.R.id.content);
+		TransitionManager.beginDelayedTransition(root, new Fade());
+		v.player_root.setVisibility(showPlayer ? View.VISIBLE : View.GONE);
+		v.content_root.setVisibility(showPlayer ? View.GONE : View.VISIBLE);
+		v.topbarmain.setVisibility(showPlayer ? View.GONE : View.VISIBLE);
 	}
 	
 	private void loadLocale() {
@@ -296,19 +495,17 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	public void onBackPressed() {
 		if (v.player_root.getVisibility() == View.VISIBLE) {
-			v.player_root.setVisibility(View.GONE);
-			v.content_root.setVisibility(View.VISIBLE);
-			v.topbarmain.setVisibility(View.VISIBLE);
+			togglePlayerView(false);
 		} else {
-			v.player_root.setVisibility(View.VISIBLE);
-			v.content_root.setVisibility(View.GONE);
-			v.topbarmain.setVisibility(View.GONE);
+			togglePlayerView(true);
 		}
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
+		applyDepthFromPrefs();
+		restoreTrackInfo();
 		if (SynMusic.getString("p", "").contains("pause")) {
 			v.ic_play_click.setImageResource(R.drawable.ic_play);
 		} else {
@@ -332,14 +529,52 @@ public class MainActivity extends AppCompatActivity {
 	}
 	
 	@Override
+	protected void onStart() {
+		super.onStart();
+		if (!mBound) {
+			ServiceBind_Start();
+		}
+		restoreTrackInfo();
+	}
+	
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
+        prefs.unregisterOnSharedPreferenceChangeListener(prefListener);
+        if (depthApplied) {
+            VGlobalDepth.detach();
+            depthApplied = false;
+        }
 		Intent stopIntent = new Intent(MainActivity.this, VARTHMusicService.class);
 		stopIntent.setAction("STOP");
 		startService(stopIntent);
 	}
 	public void reflesh() {
 		if (v.music_view.getAdapter() != null) v.music_view.getAdapter().notifyDataSetChanged();
+	}
+	
+	private void saveTrackInfo(String title, String artist, String path, long duration, int position) {
+		SharedPreferences.Editor e = SynMusic.edit();
+		e.putString("title", title);
+		e.putString("artist", artist);
+		e.putString("path", path);
+		e.putLong("duration", duration);
+		e.putInt("position", position);
+		e.apply();
+	}
+	
+	private void restoreTrackInfo() {
+		String title = SynMusic.getString("title", "");
+		String artist = SynMusic.getString("artist", "");
+		String path = SynMusic.getString("path", "");
+		long duration = SynMusic.getLong("duration", 0);
+		int position = SynMusic.getInt("position", -1);
+		if (!path.isEmpty()) {
+			v.name_music.setText(title);
+			v.duration_music.setText(artist);
+			v.slider_music.setValueTo(duration);
+			songPosition = position;
+		}
 	}
 	
 	public void getMusicTime(final TextView _text, final double _time) {
@@ -547,6 +782,9 @@ public class MainActivity extends AppCompatActivity {
 					map.put("albumId", albumId);
 					map.put("path", path);
 					map.put("time", duration);
+					Uri albumArtUri = Uri.parse("content://media/external/audio/albumart");
+					Uri albumUri = ContentUris.withAppendedId(albumArtUri, albumId);
+					map.put("albumArt", albumUri.toString());
 					
 					if (title == null || title.isEmpty()) {
 						String fileName = new java.io.File(path).getName();
@@ -631,6 +869,41 @@ public class MainActivity extends AppCompatActivity {
 		SynDialog.show();
 	}
 	
+	public void SynD_C_List() {
+		SynDialog = new AlertDialog.Builder(MainActivity.this).create();
+		LayoutInflater SynDialogLI = getLayoutInflater();
+		View SynDialogCV = (View) SynDialogLI.inflate(R.layout.list_view_settings, null);
+		SynDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+		SynDialog.setView(SynDialogCV);
+		final CardView c1 = (CardView)
+		SynDialogCV.findViewById(R.id.c1);
+		SynDialog.getWindow().setBackgroundDrawable(new ColorDrawable(SketchwareUtil.getMaterialColor(MainActivity.this, R.attr.colorSurface)));
+		c1.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				onConfirmDeleteFromDialog();
+			}
+		});
+		SynDialog.show();
+	}
+	
+	/** Вызывай из своего кастомного диалога, передавая позицию элемента. */
+	public void onConfirmDeleteFromDialog() {
+    if (pendingDeletePos < 0 || pendingDeletePos >= song_list.size()) {
+        pendingDeletePos = -1;
+        return;
+    }
+    HashMap<String, Object> item = song_list.get(pendingDeletePos);
+    if (item.containsKey("Id")) {
+        long audioId = ((Number) item.get("Id")).longValue();
+        deleteTrackById(audioId, pendingDeletePos);
+    } else {
+        String p = String.valueOf(item.get("path"));
+        deleteTrackByPath(p, pendingDeletePos);
+    }
+    pendingDeletePos = -1;
+}
+	
 	public void recive() {
 	}
 	// ==== Utils ====
@@ -674,6 +947,16 @@ public class MainActivity extends AppCompatActivity {
 			v.name_music_player.setText(song_name);
 			
 			SynMusic.edit().putString("path", path).apply();
+			
+			// Сохраняем все поля трека (подтягиваем из списка, если есть)
+			String artist = "Unknown Artist";
+			long duration = totalMs;
+			if (pos >= 0 && pos < song_list.size()) {
+				HashMap<String, Object> m = song_list.get(pos);
+				if (m.get("artist") != null) artist = String.valueOf(m.get("artist"));
+				if (m.get("time") != null) duration = (long) ( (Number) m.get("time") ).longValue();
+			}
+			saveTrackInfo(song_name, artist, path, duration, pos);
 		}
 	};
 	
@@ -741,10 +1024,19 @@ public class MainActivity extends AppCompatActivity {
 			final com.google.android.material.textview.MaterialTextView textview4 = _view.findViewById(R.id.textview4);
 			final com.google.android.material.textview.MaterialTextView textview2 = _view.findViewById(R.id.textview2);
 			
-			textview1.setText(_data.get((int)_position).get("title").toString());
-			textview2.setText(_data.get((int)_position).get("artist").toString());
-			getMusicTime(textview4, Double.parseDouble(_data.get((int)_position).get("time").toString()));
-			if ((songPosition == _position) && _data.get((int)_position).get("title").toString().equals(song_name)) {
+			HashMap<String, Object> item = _data.get(_position);
+			
+			textview1.setText(String.valueOf(item.get("title")));
+			textview2.setText(String.valueOf(item.get("artist")));
+			getMusicTime(textview4, Double.parseDouble(String.valueOf(item.get("time"))));
+			
+			long albumIdVal = 0L;
+			Object aIdObj = _data.get(_position).get("albumId");
+			if (aIdObj instanceof Number) albumIdVal = ((Number) aIdObj).longValue();
+			imageview1.setImageResource(R.drawable.ic_logo); // placeholder сразу
+			loadAlbumArtAsync(imageview1, albumIdVal);
+			
+			if ((songPosition == _position) && String.valueOf(item.get("title")).equals(song_name)) {
 				textview1.setTextColor(SketchwareUtil.getMaterialColor(MainActivity.this, R.attr.colorErrorContainer));
 				textview2.setTextColor(SketchwareUtil.getMaterialColor(MainActivity.this, R.attr.colorOnSurfaceVariant));
 				textview4.setTextColor(SketchwareUtil.getMaterialColor(MainActivity.this, R.attr.colorOnSurfaceVariant));
@@ -769,11 +1061,23 @@ public class MainActivity extends AppCompatActivity {
 						mBoundService.setPosition((int)_position);
 						SynIntent.setAction("START");
 						startService(SynIntent);
+						
+						saveTrackInfo(
+						String.valueOf(item.get("title")),
+						String.valueOf(item.get("artist")),
+						String.valueOf(item.get("path")),
+						((Number) item.get("time")).longValue(),
+						_position
+						);
 					}
-					v.player_root.setVisibility(View.VISIBLE);
-					v.content_root.setVisibility(View.GONE);
-					v.topbarmain.setVisibility(View.GONE);
+					togglePlayerView(true);
 				}
+			});
+			linear1.setOnLongClickListener(vLong -> {
+                pendingDeletePos = _position;
+				SynD_C_List();
+				
+				return true; // long-click consumed
 			});
 		}
 		

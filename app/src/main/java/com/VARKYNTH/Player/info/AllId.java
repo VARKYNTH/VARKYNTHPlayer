@@ -55,11 +55,13 @@ public final class AllId {
 		public final LinearLayout topbarother;
 		public final com.google.android.material.card.MaterialCardView fx_card;
 		public final com.google.android.material.card.MaterialCardView t_language;
+        public final com.google.android.material.card.MaterialCardView ide_card;
 		
 		private SettingsViewId(Activity a) {
 			
 			topbarother = a.findViewById(R.id.topbarother);
 			fx_card = a.findViewById(R.id.fx_card);
+            ide_card = a.findViewById(R.id.ide_card);
 			t_language = a.findViewById(R.id.t_language);
 		}
 		public static SettingsViewId bind(Activity a) {
@@ -142,6 +144,20 @@ public final class AllId {
 		}
 		public static MainViewId bind(Activity a) {
 			return new MainViewId(a);
+		}
+	}
+    public static final class SettingsViewExperimentalId {
+		
+		public final LinearLayout topbarother;
+		public final com.google.android.material.switchmaterial.SwitchMaterial ide_sw;
+		
+		private SettingsViewExperimentalId(Activity a) {
+			
+			topbarother = a.findViewById(R.id.topbarother);
+			ide_sw = a.findViewById(R.id.ide_sw);
+		}
+		public static SettingsViewExperimentalId bind(Activity a) {
+			return new SettingsViewExperimentalId(a);
 		}
 	}
 }

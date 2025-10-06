@@ -19,6 +19,7 @@ import java.util.Locale;
 
 import com.VARKYNTH.Player.info.AllId;
 import com.VARKYNTH.Player.info.VFont;
+import com.VARKYNTH.Player.ui.VGlobalDepth;
 
 public class VARTHSettingsActivity extends AppCompatActivity {
 
@@ -32,14 +33,27 @@ public class VARTHSettingsActivity extends AppCompatActivity {
     private AllId.SettingsViewId v;
 
 	private SharedPreferences sharedPreferences;
+    private SharedPreferences prefs;
 	private Intent intent = new Intent();
-
+    
+    private boolean depthApplied = false;
+    
+    private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
+    
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.varth_settings);
         
-        com.VARKYNTH.Player.ui.VGlobalDepth.attach(this);
+        prefs = getSharedPreferences("vplayer_prefs", MODE_PRIVATE);
+
+        applyDepthFromPrefs();
+
+        // Живое обновление при смене настройки в SettingsActivity
+        prefListener = (sp, key) -> {
+            if ("global_depth_enabled".equals(key)) applyDepthFromPrefs();
+        };
+        prefs.registerOnSharedPreferenceChangeListener(prefListener);
         
         VFont.boldAll(this, findViewById(android.R.id.content));
 
@@ -55,6 +69,14 @@ public class VARTHSettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				intent.setClass(getApplicationContext(), VARTHFxActivity.class);
+				startActivity(intent);
+			}
+		});
+        
+        v.ide_card.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				intent.setClass(getApplicationContext(), com.VARKYNTH.Player.VARTHSettingsExperimental.class);
 				startActivity(intent);
 			}
 		});
@@ -110,6 +132,16 @@ public class VARTHSettingsActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
+    }
+    private void applyDepthFromPrefs() {
+        boolean enabled = prefs.getBoolean("global_depth_enabled", false); // default OFF
+        if (enabled && !depthApplied) {
+            VGlobalDepth.attach(this);   // включить эффект
+            depthApplied = true;
+        } else if (!enabled && depthApplied) {
+            VGlobalDepth.detach();       // выключить эффект
+            depthApplied = false;
+        }
     }
 	
 }

@@ -96,6 +96,42 @@
                     </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardBackgroundColor="?colorSurface"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="20dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:background="?colorSurface"
+                    android:orientation="vertical">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:text="Settings Experimental"
+                        android:textSize="16sp" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/ide_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:contentPadding="8dp"
+                        app:cardBackgroundColor="?colorOnSurfaceInverse"
+                        app:cardElevation="10dp"
+                        app:cardCornerRadius="20dp">
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="Settings Experimental"
+                            android:textSize="12sp" />
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

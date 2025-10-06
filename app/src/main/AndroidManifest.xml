@@ -35,10 +35,17 @@
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="android.permission.SET_SYSTEM_AUDIO_CAPTION" />
-	<uses-permission android:name="android.permission.ACCESS_ULTRASOUND" />
-	<uses-permission android:name="android.permission.BIND_SOUND_TRIGGER_DETECTION_SERVICE" />
+	<uses-permission android:name="android.permission.RECORD_BACKGROUND_AUDIO" />
+	<uses-permission android:name="android.permission.RECORD_AUDIO" />
+	<uses-permission android:name="android.permission.EXEMPT_FROM_AUDIO_RECORD_RESTRICTIONS" />
+	<uses-permission android:name="android.permission.CAPTURE_AUDIO_OUTPUT" />
+	<uses-permission android:name="android.permission.CAPTURE_AUDIO_HOTWORD" />
+	<uses-permission android:name="android.permission.CAPTURE_TUNER_AUDIO_INPUT" />
 	<uses-permission android:name="android.permission.SOUND_TRIGGER_RUN_IN_BATTERY_SAVER" />
 	<uses-permission android:name="android.permission.MANAGE_SOUND_TRIGGER" />
+	<uses-permission android:name="android.permission.DISABLE_SYSTEM_SOUND_EFFECTS" />
+	<uses-permission android:name="android.permission.ACCESS_ULTRASOUND" />
+	<uses-permission android:name="android.permission.BIND_SOUND_TRIGGER_DETECTION_SERVICE" />
 	<supports-screens
         android:anyDensity="true"
         android:smallScreens="true"
@@ -343,10 +350,10 @@ android:preserveLegacyExternalStorage="true"
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
 <intent-filter>
-                <action android:name="com.VARKYNTH.Player.START" />
-                <action android:name="com.VARKYNTH.Player.NEXT" />
-                <action android:name="com.VARKYNTH.Player.PRE" />
-                <action android:name="com.VARKYNTH.Player.STOP" />
+                <action android:name="START" />
+                <action android:name="NEXT" />
+                <action android:name="PRE" />
+                <action android:name="STOP" />
             </intent-filter>            
 		</activity>
 		<activity
@@ -396,6 +403,14 @@ android:preserveLegacyExternalStorage="true"
 			android:theme="@style/AppTheme"
 			android:windowSoftInputMode="stateHidden"
 			android:name="VARTHSettingsActivity" />
+		<activity
+			android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
+			android:hardwareAccelerated="true"
+			android:supportsPictureInPicture="true"
+			android:screenOrientation="portrait"
+			android:theme="@style/AppTheme"
+			android:windowSoftInputMode="stateHidden"
+			android:name="com.VARKYNTH.Player.VARTHSettingsExperimental" />
 		<uses-library
 			android:name="org.apache.http.legacy"
 			android:required="false" />
@@ -417,5 +432,6 @@ android:enabled="true"/>
         android:name="android.support.FILE_PROVIDER_PATHS"
         android:resource="@xml/file_paths"/>
 </provider>
+
 	</application>
 </manifest>
