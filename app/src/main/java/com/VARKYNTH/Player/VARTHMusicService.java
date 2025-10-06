@@ -41,6 +41,7 @@ public class VARTHMusicService extends Service {
 		}
 	};
 	
+	
 	private final BroadcastReceiver toggleReceiver = new BroadcastReceiver() {
 		@Override public void onReceive(Context context, Intent intent) {
 			if (core == null) return;
@@ -59,13 +60,12 @@ public class VARTHMusicService extends Service {
 	};
 	
 	private void reg(BroadcastReceiver r, IntentFilter f){
-		if (Build.VERSION.SDK_INT >= 33) registerReceiver(r, f, Context.RECEIVER_EXPORTED);
+		if (Build.VERSION.SDK_INT >= 33) registerReceiver(r, f, Context.RECEIVER_NOT_EXPORTED);
 		else registerReceiver(r, f);
 	}
 	
 	@Override public void onCreate() {
 		super.onCreate();
-		
 		af = (AudioManager) getSystemService(AUDIO_SERVICE);
 		
 		reg(toggleReceiver, new IntentFilter(BR_SONG_CONTROL));

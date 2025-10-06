@@ -34,6 +34,11 @@
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="android.permission.SET_SYSTEM_AUDIO_CAPTION" />
+	<uses-permission android:name="android.permission.ACCESS_ULTRASOUND" />
+	<uses-permission android:name="android.permission.BIND_SOUND_TRIGGER_DETECTION_SERVICE" />
+	<uses-permission android:name="android.permission.SOUND_TRIGGER_RUN_IN_BATTERY_SAVER" />
+	<uses-permission android:name="android.permission.MANAGE_SOUND_TRIGGER" />
 	<supports-screens
         android:anyDensity="true"
         android:smallScreens="true"
@@ -412,6 +417,5 @@ android:enabled="true"/>
         android:name="android.support.FILE_PROVIDER_PATHS"
         android:resource="@xml/file_paths"/>
 </provider>
-
 	</application>
 </manifest>

@@ -49,6 +49,8 @@ public class VARTHFxActivity extends AppCompatActivity {
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.varth_fx);
+        
+        com.VARKYNTH.Player.ui.VGlobalDepth.attach(this);
 		
 		VFont.boldAll(this, findViewById(android.R.id.content));
 		
@@ -188,6 +190,7 @@ public class VARTHFxActivity extends AppCompatActivity {
 	@Override
 	public void onStop() {
 		super.onStop();
+        com.VARKYNTH.Player.ui.VGlobalDepth.detach();
 		if (bound) {
 			unbindService(conn);
 			bound = false;

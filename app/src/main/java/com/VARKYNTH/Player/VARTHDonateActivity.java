@@ -23,6 +23,8 @@ public class VARTHDonateActivity extends AppCompatActivity {
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.varth_donate);
         
+        com.VARKYNTH.Player.ui.VGlobalDepth.attach(this);
+        
         VFont.boldAll(this, findViewById(android.R.id.content));
 		
 		DynamicColors.applyToActivityIfAvailable(this); int surfaceColor = MaterialColors.getColor(this, com.google.android.material.R.attr.colorSurface, 0);

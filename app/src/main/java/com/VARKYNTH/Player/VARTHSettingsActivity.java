@@ -39,6 +39,8 @@ public class VARTHSettingsActivity extends AppCompatActivity {
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.varth_settings);
         
+        com.VARKYNTH.Player.ui.VGlobalDepth.attach(this);
+        
         VFont.boldAll(this, findViewById(android.R.id.content));
 
         sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE);

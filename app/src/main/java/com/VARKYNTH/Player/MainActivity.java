@@ -126,8 +126,8 @@ public class MainActivity extends AppCompatActivity {
 	private boolean shuffleMode = false;
 	private AlertDialog SynDialog;
 	private TimerTask SynTimer;
-    
-    private AllId.MainViewId v;
+	
+	private AllId.MainViewId v;
 	
 	private AudioManager audioManager;
 	
@@ -136,16 +136,18 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.main);
         
-        VFont.boldAll(this, findViewById(android.R.id.content));
-        
-        v = AllId.MainViewId.bind(this);
+		com.VARKYNTH.Player.ui.VGlobalDepth.attach(this);
+		
+		VFont.boldAll(this, findViewById(android.R.id.content));
+		
+		v = AllId.MainViewId.bind(this);
 		
 		loadLocale();
 		
 		audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		
 		DynamicColors.applyToActivityIfAvailable(this); int surfaceColor = MaterialColors.getColor(this, com.google.android.material.R.attr.colorSurface, 0);
-        
+		
 		SynMusic = getSharedPreferences("SynMusic", Activity.MODE_PRIVATE);
 		
 		v.click_dialogs.setOnClickListener(new View.OnClickListener() {
@@ -273,8 +275,8 @@ public class MainActivity extends AppCompatActivity {
 		v.topbarmain.setVisibility(View.VISIBLE);
 		myPermissions();
 		getAllSongs();
-VARTHUpdate.startUpdateCheck(this);
-        SynStyle();
+		VARTHUpdate.startUpdateCheck(this);
+		SynStyle();
 	}
 	
 	private void loadLocale() {
@@ -335,6 +337,7 @@ VARTHUpdate.startUpdateCheck(this);
 		Intent stopIntent = new Intent(MainActivity.this, VARTHMusicService.class);
 		stopIntent.setAction("STOP");
 		startService(stopIntent);
+		com.VARKYNTH.Player.ui.VGlobalDepth.detach();
 	}
 	public void reflesh() {
 		if (v.music_view.getAdapter() != null) v.music_view.getAdapter().notifyDataSetChanged();
@@ -632,84 +635,84 @@ VARTHUpdate.startUpdateCheck(this);
 	public void recive() {
 	}
 	// ==== Utils ====
-private static String safeGetString(Intent i, String key) {
-    String v = i != null ? i.getStringExtra(key) : null;
-    return v != null ? v : "";
-}
-private static int getIntOrStringAsInt(Intent i, String key, int def) {
-    if (i == null || i.getExtras() == null) return def;
-    Object o = i.getExtras().get(key);
-    if (o instanceof Integer) return (Integer) o;
-    if (o instanceof Long)    return (int) (long) (Long) o;
-    if (o instanceof String) {
-        String s = ((String) o).trim();
-        if (!s.isEmpty()) {
-            try { return (int) Math.round(Double.parseDouble(s)); }
-            catch (NumberFormatException ignore) {}
-        }
-    }
-    return def;
-}
-
-// ==== Receiver: song data ====
-private BroadcastReceiver SongDataReceiver = new BroadcastReceiver() {
-    @Override public void onReceive(Context context, Intent intent) {
-        int totalMs   = getIntOrStringAsInt(intent, "total_duration", 0);
-        int currentMs = getIntOrStringAsInt(intent, "current_duration", 0);
-        int pos       = getIntOrStringAsInt(intent, "pos", -1);
-
-        song_name = safeGetString(intent, "song");
-        path      = safeGetString(intent, "path");
-        songPosition = pos; // если нужно double: songPosition = (double) pos;
-
-        v.slider_music.setValueTo(totalMs);
-        v.slider_music.setValue(currentMs);
-
-        getMusicTime(v.timestart, currentMs);
-        getMusicTime(v.timeoff,  totalMs);
-
-        v.name_music.setText(song_name);
-        v.name_music_player.setText(song_name);
-
-        SynMusic.edit().putString("path", path).apply();
-    }
-};
-
-// ==== Receiver: play/pause state ====
-private BroadcastReceiver SongStateReceiver = new BroadcastReceiver() {
-    @Override public void onReceive(Context context, Intent intent) {
-        String s = safeGetString(intent, "responce");
-        if ("pause".equalsIgnoreCase(s)) {
-            v.ic_play_click.setImageResource(R.drawable.ic_play);
-            SynMusic.edit().putString("p", "pause").apply();
-            return;
-        }
-        if ("play".equalsIgnoreCase(s)) {
-            SynMusic.edit().putString("p", "play").apply();
-            v.ic_play_click.setImageResource(R.drawable.ic_pause);
-
-            SynTimer = new TimerTask() {
-                @Override public void run() {
-                    runOnUiThread(() -> {
-                        String pth = SynMusic.getString("path", "");
-                        v.duration_music.setText(pth);
-                        v.duration_music.setSingleLine(true);
-                        v.duration_music.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-                        v.duration_music.setSelected(true);
-
-                        v.name_duration_player.setText(pth);
-                        v.name_duration_player.setSingleLine(true);
-                        v.name_duration_player.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-                        v.name_duration_player.setSelected(true);
-
-                        reflesh();
-                    });
-                }
-            };
-            _timer.schedule(SynTimer, 80);
-        }
-    }
-};
+	private static String safeGetString(Intent i, String key) {
+		String v = i != null ? i.getStringExtra(key) : null;
+		return v != null ? v : "";
+	}
+	private static int getIntOrStringAsInt(Intent i, String key, int def) {
+		if (i == null || i.getExtras() == null) return def;
+		Object o = i.getExtras().get(key);
+		if (o instanceof Integer) return (Integer) o;
+		if (o instanceof Long)    return (int) (long) (Long) o;
+		if (o instanceof String) {
+			String s = ((String) o).trim();
+			if (!s.isEmpty()) {
+				try { return (int) Math.round(Double.parseDouble(s)); }
+				catch (NumberFormatException ignore) {}
+			}
+		}
+		return def;
+	}
+	
+	// ==== Receiver: song data ====
+	private BroadcastReceiver SongDataReceiver = new BroadcastReceiver() {
+		@Override public void onReceive(Context context, Intent intent) {
+			int totalMs   = getIntOrStringAsInt(intent, "total_duration", 0);
+			int currentMs = getIntOrStringAsInt(intent, "current_duration", 0);
+			int pos       = getIntOrStringAsInt(intent, "pos", -1);
+			
+			song_name = safeGetString(intent, "song");
+			path      = safeGetString(intent, "path");
+			songPosition = pos; // если нужно double: songPosition = (double) pos;
+			
+			v.slider_music.setValueTo(totalMs);
+			v.slider_music.setValue(currentMs);
+			
+			getMusicTime(v.timestart, currentMs);
+			getMusicTime(v.timeoff,  totalMs);
+			
+			v.name_music.setText(song_name);
+			v.name_music_player.setText(song_name);
+			
+			SynMusic.edit().putString("path", path).apply();
+		}
+	};
+	
+	// ==== Receiver: play/pause state ====
+	private BroadcastReceiver SongStateReceiver = new BroadcastReceiver() {
+		@Override public void onReceive(Context context, Intent intent) {
+			String s = safeGetString(intent, "responce");
+			if ("pause".equalsIgnoreCase(s)) {
+				v.ic_play_click.setImageResource(R.drawable.ic_play);
+				SynMusic.edit().putString("p", "pause").apply();
+				return;
+			}
+			if ("play".equalsIgnoreCase(s)) {
+				SynMusic.edit().putString("p", "play").apply();
+				v.ic_play_click.setImageResource(R.drawable.ic_pause);
+				
+				SynTimer = new TimerTask() {
+					@Override public void run() {
+						runOnUiThread(() -> {
+							String pth = SynMusic.getString("path", "");
+							v.duration_music.setText(pth);
+							v.duration_music.setSingleLine(true);
+							v.duration_music.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+							v.duration_music.setSelected(true);
+							
+							v.name_duration_player.setText(pth);
+							v.name_duration_player.setSingleLine(true);
+							v.name_duration_player.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+							v.name_duration_player.setSelected(true);
+							
+							reflesh();
+						});
+					}
+				};
+				_timer.schedule(SynTimer, 80);
+			}
+		}
+	};
 	
 	public class Recyclerview1Adapter extends RecyclerView.Adapter<Recyclerview1Adapter.ViewHolder> {
 		ArrayList<HashMap<String, Object>> _data;

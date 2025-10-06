@@ -25,7 +25,7 @@ public class VARTHApplication extends Application {
 		super.onCreate();
 		mApplicationContext = getApplicationContext();
         loadLocale();
-		
+        
 		Thread.setDefaultUncaughtExceptionHandler(
 		new Thread.UncaughtExceptionHandler() {
 			@Override
