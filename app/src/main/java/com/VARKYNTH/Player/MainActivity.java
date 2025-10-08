@@ -100,14 +100,16 @@ import android.content.ContentUris;
 
 import android.provider.MediaStore;
 import android.provider.BaseColumns;
-import android.database.Cursor;
 import android.content.IntentSender;
 import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import android.content.ContentUris;
+
+import android.content.ClipData;
+import androidx.core.content.FileProvider; // fallback по file:// → content://
 
 import com.VARKYNTH.Player.ui.VGlobalDepth;
+import com.VARKYNTH.Player.ui.ReactiveGradientDrawable;
 
 public class MainActivity extends AppCompatActivity {
 	
@@ -157,17 +159,20 @@ public class MainActivity extends AppCompatActivity {
 	private AllId.MainViewId v;
 	
 	private AudioManager audioManager;
-    
-    private SharedPreferences prefs;
+	
+	private SharedPreferences prefs;
 	
 	// поле класса
 	private ActivityResultLauncher<IntentSenderRequest> deleteRequestLauncher;
-    
-    private int pendingDeletePos = -1;
-    
-    private boolean depthApplied = false;
-    
-    private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
+	
+	private int pendingDeletePos = -1;
+	private int pendingSharePos = -1;
+	
+	private boolean depthApplied = false;
+	
+	private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
+	
+	private ReactiveGradientDrawable playerBg;
 	
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
@@ -192,14 +197,14 @@ public class MainActivity extends AppCompatActivity {
 		);
 		
 		prefs = getSharedPreferences("vplayer_prefs", MODE_PRIVATE);
-
-        applyDepthFromPrefs();
-
-        // Живое обновление при смене настройки в SettingsActivity
-        prefListener = (sp, key) -> {
-            if ("global_depth_enabled".equals(key)) applyDepthFromPrefs();
-        };
-        prefs.registerOnSharedPreferenceChangeListener(prefListener);
+		
+		applyDepthFromPrefs();
+		
+		// Живое обновление при смене настройки в SettingsActivity
+		prefListener = (sp, key) -> {
+			if ("global_depth_enabled".equals(key)) applyDepthFromPrefs();
+		};
+		prefs.registerOnSharedPreferenceChangeListener(prefListener);
 		
 		VFont.boldAll(this, findViewById(android.R.id.content));
 		
@@ -325,6 +330,11 @@ public class MainActivity extends AppCompatActivity {
 			getAllSongs();
 		});
 		
+		// leave only this — ИСПОЛЬЗУЕМ ПОЛЕ КЛАССА
+playerBg = new ReactiveGradientDrawable();
+v.player_root.setBackground(playerBg);
+		
+		
 		registerReceiver(SongDataReceiver,new IntentFilter("com.dplay.SONG_DATA"), RECEIVER_EXPORTED);
 		registerReceiver(SongStateReceiver,new IntentFilter("com.dplay.SONG_STATE"), RECEIVER_EXPORTED);
 		SynIntent.setClass(getApplicationContext(), VARTHMusicService.class);
@@ -341,17 +351,17 @@ public class MainActivity extends AppCompatActivity {
 		VARTHUpdate.startUpdateCheck(this);
 		SynStyle();
 	}
-    
-    private void applyDepthFromPrefs() {
-        boolean enabled = prefs.getBoolean("global_depth_enabled", false); // default OFF
-        if (enabled && !depthApplied) {
-            VGlobalDepth.attach(this);   // включить эффект
-            depthApplied = true;
-        } else if (!enabled && depthApplied) {
-            VGlobalDepth.detach();       // выключить эффект
-            depthApplied = false;
-        }
-    }
+	
+	private void applyDepthFromPrefs() {
+		boolean enabled = prefs.getBoolean("global_depth_enabled", false); // default OFF
+		if (enabled && !depthApplied) {
+			VGlobalDepth.attach(this);   // включить эффект
+			depthApplied = true;
+		} else if (!enabled && depthApplied) {
+			VGlobalDepth.detach();       // выключить эффект
+			depthApplied = false;
+		}
+	}
 	
 	private int dp(int v) {
 		float d = getResources().getDisplayMetrics().density;
@@ -523,10 +533,25 @@ public class MainActivity extends AppCompatActivity {
 			v.name_duration_player.setEllipsize(TextUtils.TruncateAt.MARQUEE);
 			v.name_duration_player.setSelected(true);
 		}
-		SharedPreferences SynMusic = getSharedPreferences("favourites_paths", MODE_PRIVATE);
 		Set<String> set = SynMusic.getStringSet("paths", new HashSet<>());
+        if (playerBg != null) {
+        playerBg.start();
+        playerBg.startVisualizer();  // глобальный микс (session 0) — без правок сервиса
+        // режим по умолчанию:
+        playerBg.setModeIdle();
+        playerBg.setSensitivity(2.0f); // можно 1.6–2.2
+		}
 		ServiceBind_Start();
 	}
+
+@Override
+protected void onPause() {
+    super.onPause();
+    if (playerBg != null) {
+        playerBg.stopVisualizer();
+        playerBg.stop();
+    }
+}
 	
 	@Override
 	protected void onStart() {
@@ -540,11 +565,11 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-        prefs.unregisterOnSharedPreferenceChangeListener(prefListener);
-        if (depthApplied) {
-            VGlobalDepth.detach();
-            depthApplied = false;
-        }
+		prefs.unregisterOnSharedPreferenceChangeListener(prefListener);
+		if (depthApplied) {
+			VGlobalDepth.detach();
+			depthApplied = false;
+		}
 		Intent stopIntent = new Intent(MainActivity.this, VARTHMusicService.class);
 		stopIntent.setAction("STOP");
 		startService(stopIntent);
@@ -877,6 +902,8 @@ public class MainActivity extends AppCompatActivity {
 		SynDialog.setView(SynDialogCV);
 		final CardView c1 = (CardView)
 		SynDialogCV.findViewById(R.id.c1);
+		final CardView c2 = (CardView)
+		SynDialogCV.findViewById(R.id.c2);
 		SynDialog.getWindow().setBackgroundDrawable(new ColorDrawable(SketchwareUtil.getMaterialColor(MainActivity.this, R.attr.colorSurface)));
 		c1.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -884,25 +911,94 @@ public class MainActivity extends AppCompatActivity {
 				onConfirmDeleteFromDialog();
 			}
 		});
+		c2.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				onShareFromDialog();
+			}
+		});
 		SynDialog.show();
+	}
+	
+	public void onShareFromDialog() {
+		if (pendingSharePos < 0 || pendingSharePos >= song_list.size()) return;
+		HashMap<String, Object> item = song_list.get(pendingSharePos);
+		if (item.containsKey("Id")) {
+			shareTrackById(((Number) item.get("Id")).longValue(), String.valueOf(item.get("title")));
+		} else {
+			shareTrackByPath(String.valueOf(item.get("path")), String.valueOf(item.get("title")));
+		}
+		pendingSharePos = -1;
+	}
+	
+	private void shareTrackById(long audioId, String titleForChooser) {
+		try {
+			Uri contentUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, audioId);
+			
+			Intent send = new Intent(Intent.ACTION_SEND);
+			send.setType("audio/*");
+			send.putExtra(Intent.EXTRA_STREAM, contentUri);
+			send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+			
+			// на всякий случай — ClipData для корректного грaнта
+			send.setClipData(ClipData.newRawUri("audio", contentUri));
+			
+			startActivity(Intent.createChooser(send, titleForChooser != null ? titleForChooser : "Share audio"));
+		} catch (Exception ignored) {}
+	}
+	
+	private void shareTrackByPath(String absolutePath, String titleForChooser) {
+		// 1) пытаемся найти _ID по пути и делегируем в shareTrackById(...)
+		String[] projection = { BaseColumns._ID };
+		try (Cursor c = getContentResolver().query(
+		MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+		projection,
+		MediaStore.Audio.Media.DATA + " = ?",
+		new String[]{ absolutePath },
+		null)) {
+			
+			if (c != null && c.moveToFirst()) {
+				long id = c.getLong(0);
+				shareTrackById(id, titleForChooser);
+				return;
+			}
+		} catch (Exception ignored) {}
+		
+		// 2) fallback: FileProvider (нужен provider в манифесте)
+		try {
+			java.io.File f = new java.io.File(absolutePath);
+			Uri uri = FileProvider.getUriForFile(
+			this,
+			getPackageName() + ".fileprovider", // см. примечание ниже
+			f
+			);
+			
+			Intent send = new Intent(Intent.ACTION_SEND);
+			send.setType("audio/*");
+			send.putExtra(Intent.EXTRA_STREAM, uri);
+			send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+			send.setClipData(ClipData.newRawUri("audio", uri));
+			
+			startActivity(Intent.createChooser(send, titleForChooser != null ? titleForChooser : "Share audio"));
+		} catch (Exception ignored) {}
 	}
 	
 	/** Вызывай из своего кастомного диалога, передавая позицию элемента. */
 	public void onConfirmDeleteFromDialog() {
-    if (pendingDeletePos < 0 || pendingDeletePos >= song_list.size()) {
-        pendingDeletePos = -1;
-        return;
-    }
-    HashMap<String, Object> item = song_list.get(pendingDeletePos);
-    if (item.containsKey("Id")) {
-        long audioId = ((Number) item.get("Id")).longValue();
-        deleteTrackById(audioId, pendingDeletePos);
-    } else {
-        String p = String.valueOf(item.get("path"));
-        deleteTrackByPath(p, pendingDeletePos);
-    }
-    pendingDeletePos = -1;
-}
+		if (pendingDeletePos < 0 || pendingDeletePos >= song_list.size()) {
+			pendingDeletePos = -1;
+			return;
+		}
+		HashMap<String, Object> item = song_list.get(pendingDeletePos);
+		if (item.containsKey("Id")) {
+			long audioId = ((Number) item.get("Id")).longValue();
+			deleteTrackById(audioId, pendingDeletePos);
+		} else {
+			String p = String.valueOf(item.get("path"));
+			deleteTrackByPath(p, pendingDeletePos);
+		}
+		pendingDeletePos = -1;
+	}
 	
 	public void recive() {
 	}
@@ -967,11 +1063,13 @@ public class MainActivity extends AppCompatActivity {
 			if ("pause".equalsIgnoreCase(s)) {
 				v.ic_play_click.setImageResource(R.drawable.ic_play);
 				SynMusic.edit().putString("p", "pause").apply();
+                if (playerBg != null) playerBg.setModeIdle();        // ← добавить
 				return;
 			}
 			if ("play".equalsIgnoreCase(s)) {
 				SynMusic.edit().putString("p", "play").apply();
 				v.ic_play_click.setImageResource(R.drawable.ic_pause);
+                if (playerBg != null) playerBg.setModeReactive();
 				
 				SynTimer = new TimerTask() {
 					@Override public void run() {
@@ -1074,7 +1172,8 @@ public class MainActivity extends AppCompatActivity {
 				}
 			});
 			linear1.setOnLongClickListener(vLong -> {
-                pendingDeletePos = _position;
+				pendingDeletePos = _position;
+				pendingSharePos = _position;
 				SynD_C_List();
 				
 				return true; // long-click consumed

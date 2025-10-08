@@ -60,4 +60,5 @@ public class VARTHApplication extends Application {
 		super.onConfigurationChanged(newConfig);
 		loadLocale();
 	}
+    
 }

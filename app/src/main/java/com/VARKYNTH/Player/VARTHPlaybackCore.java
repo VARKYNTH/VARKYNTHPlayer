@@ -31,7 +31,7 @@ final class VARTHPlaybackCore {
 	ArrayList<HashMap<String,Object>> list = new ArrayList<>();
 	VARTHRepeatMode repeatMode = VARTHRepeatMode.OFF;
 	boolean shuffle = false;
-	
+
 	VARTHPlaybackCore(Context ctx, VARTHEffectsManager fx, Callback cb) {
 		this.ctx = ctx.getApplicationContext();
 		this.fx = fx;
