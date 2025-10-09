@@ -121,10 +121,10 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:layout_weight="1"
-                android:stepSize="1"
+                android:stepSize="0"
                 android:value="0"
                 android:valueFrom="0"
-                android:valueTo="100" />
+                android:valueTo="1" />
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/timeoff"
                 android:layout_width="wrap_content"
@@ -154,7 +154,9 @@
                     app:contentPadding="8dp"
                     app:cardBackgroundColor="?colorOnSurfaceInverse"
                     app:cardElevation="10dp"
-                    app:cardCornerRadius="20dp">
+                    app:cardCornerRadius="20dp"
+                    app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutline">
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -177,7 +179,9 @@
                     app:contentPadding="8dp"
                     app:cardBackgroundColor="?colorOnSurfaceInverse"
                     app:cardElevation="10dp"
-                    app:cardCornerRadius="20dp">
+                    app:cardCornerRadius="20dp"
+                    app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutline">
                     <ImageView
                         android:id="@+id/ic_play_click"
                         android:layout_width="match_parent"
@@ -201,7 +205,9 @@
                     app:contentPadding="8dp"
                     app:cardBackgroundColor="?colorOnSurfaceInverse"
                     app:cardElevation="10dp"
-                    app:cardCornerRadius="20dp">
+                    app:cardCornerRadius="20dp"
+                    app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutline">
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

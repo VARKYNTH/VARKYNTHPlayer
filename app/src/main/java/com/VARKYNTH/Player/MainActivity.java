@@ -109,7 +109,6 @@ import android.content.ClipData;
 import androidx.core.content.FileProvider; // fallback по file:// → content://
 
 import com.VARKYNTH.Player.ui.VGlobalDepth;
-import com.VARKYNTH.Player.ui.ReactiveGradientDrawable;
 
 public class MainActivity extends AppCompatActivity {
 	
@@ -172,10 +171,10 @@ public class MainActivity extends AppCompatActivity {
 	
 	private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
 	
-	private ReactiveGradientDrawable playerBg;
-	
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
+        int savedMode = getSharedPreferences("settings", MODE_PRIVATE).getInt("theme_mode", 0);
+VARTHSettingsActivity.applyTheme(savedMode);
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.main);
 		
@@ -329,11 +328,6 @@ public class MainActivity extends AppCompatActivity {
 		v.swipe_refresh_music_list.setOnRefreshListener(() -> {
 			getAllSongs();
 		});
-		
-		// leave only this — ИСПОЛЬЗУЕМ ПОЛЕ КЛАССА
-playerBg = new ReactiveGradientDrawable();
-v.player_root.setBackground(playerBg);
-		
 		
 		registerReceiver(SongDataReceiver,new IntentFilter("com.dplay.SONG_DATA"), RECEIVER_EXPORTED);
 		registerReceiver(SongStateReceiver,new IntentFilter("com.dplay.SONG_STATE"), RECEIVER_EXPORTED);
@@ -534,23 +528,12 @@ v.player_root.setBackground(playerBg);
 			v.name_duration_player.setSelected(true);
 		}
 		Set<String> set = SynMusic.getStringSet("paths", new HashSet<>());
-        if (playerBg != null) {
-        playerBg.start();
-        playerBg.startVisualizer();  // глобальный микс (session 0) — без правок сервиса
-        // режим по умолчанию:
-        playerBg.setModeIdle();
-        playerBg.setSensitivity(2.0f); // можно 1.6–2.2
-		}
 		ServiceBind_Start();
 	}
 
 @Override
 protected void onPause() {
     super.onPause();
-    if (playerBg != null) {
-        playerBg.stopVisualizer();
-        playerBg.stop();
-    }
 }
 	
 	@Override
@@ -597,7 +580,12 @@ protected void onPause() {
 		if (!path.isEmpty()) {
 			v.name_music.setText(title);
 			v.duration_music.setText(artist);
-			v.slider_music.setValueTo(duration);
+			if (duration > 0) {
+    v.slider_music.setValueFrom(0f);
+    v.slider_music.setValueTo(duration);
+    // нет currentMs в onResume — не трогаем value, или можешь поставить 0f:
+    // v.slider_music.setValue(0f);
+}
 			songPosition = position;
 		}
 	}
@@ -1033,8 +1021,11 @@ protected void onPause() {
 			path      = safeGetString(intent, "path");
 			songPosition = pos; // если нужно double: songPosition = (double) pos;
 			
-			v.slider_music.setValueTo(totalMs);
-			v.slider_music.setValue(currentMs);
+			if (totalMs > 0) {
+    v.slider_music.setValueFrom(0f);
+    v.slider_music.setValueTo(totalMs);
+    v.slider_music.setValue(currentMs);
+}
 			
 			getMusicTime(v.timestart, currentMs);
 			getMusicTime(v.timeoff,  totalMs);
@@ -1063,13 +1054,11 @@ protected void onPause() {
 			if ("pause".equalsIgnoreCase(s)) {
 				v.ic_play_click.setImageResource(R.drawable.ic_play);
 				SynMusic.edit().putString("p", "pause").apply();
-                if (playerBg != null) playerBg.setModeIdle();        // ← добавить
 				return;
 			}
 			if ("play".equalsIgnoreCase(s)) {
 				SynMusic.edit().putString("p", "play").apply();
 				v.ic_play_click.setImageResource(R.drawable.ic_pause);
-                if (playerBg != null) playerBg.setModeReactive();
 				
 				SynTimer = new TimerTask() {
 					@Override public void run() {

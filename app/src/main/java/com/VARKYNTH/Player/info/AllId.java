@@ -14,6 +14,9 @@ import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.radiobutton.MaterialRadioButton;
+import android.widget.RadioGroup;
 
 import com.VARKYNTH.Player.R;
 
@@ -56,6 +59,11 @@ public final class AllId {
 		public final com.google.android.material.card.MaterialCardView fx_card;
 		public final com.google.android.material.card.MaterialCardView t_language;
         public final com.google.android.material.card.MaterialCardView ide_card;
+        public final RadioGroup groupTheme;
+         public final com.google.android.material.radiobutton.MaterialRadioButton rbLight;
+          public final com.google.android.material.radiobutton.MaterialRadioButton rbDark;
+    public final com.google.android.material.radiobutton.MaterialRadioButton rbSystem;
+    public final MaterialButton btnApplyTheme;
 		
 		private SettingsViewId(Activity a) {
 			
@@ -63,6 +71,12 @@ public final class AllId {
 			fx_card = a.findViewById(R.id.fx_card);
             ide_card = a.findViewById(R.id.ide_card);
 			t_language = a.findViewById(R.id.t_language);
+            groupTheme = a.findViewById(R.id.groupTheme);
+        rbSystem   = a.findViewById(R.id.rbSystem);
+        rbLight    = a.findViewById(R.id.rbLight);
+        rbDark     = a.findViewById(R.id.rbDark);
+        btnApplyTheme = a.findViewById(R.id.btnApplyTheme);
+            
 		}
 		public static SettingsViewId bind(Activity a) {
 			return new SettingsViewId(a);

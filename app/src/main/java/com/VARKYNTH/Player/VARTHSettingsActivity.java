@@ -6,8 +6,10 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.android.material.color.DynamicColors;
 import com.google.android.material.color.MaterialColors;
@@ -42,10 +44,15 @@ public class VARTHSettingsActivity extends AppCompatActivity {
     
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
+        // Восстанавливаем тему до setContentView, чтобы не мигало
+        int savedMode = getSharedPreferences("settings", MODE_PRIVATE)
+                .getInt("theme_mode", 0);
+        applyTheme(savedMode);
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.varth_settings);
         
         prefs = getSharedPreferences("vplayer_prefs", MODE_PRIVATE);
+        prefs = getSharedPreferences("settings", MODE_PRIVATE);
 
         applyDepthFromPrefs();
 
@@ -82,7 +89,21 @@ public class VARTHSettingsActivity extends AppCompatActivity {
 		});
 
 		v.t_language.setOnClickListener(v -> showLanguageSelectionDialog());
+        
+        // Инициализация значений
+        int mode = prefs.getInt("theme_mode", 0);
+        if (mode == 1) v.rbLight.setChecked(true);
+        else if (mode == 2) v.rbDark.setChecked(true);
+        else v.rbSystem.setChecked(true);
 
+        // Слушатели
+        v.btnApplyTheme.setOnClickListener(v -> {
+            int newMode = currentThemeSelection();
+            applyTheme(newMode);
+            prefs.edit().putInt("theme_mode", newMode).apply();
+            Toast.makeText(this, "Тема применена", Toast.LENGTH_SHORT).show();
+            recreate(); // мягкий перезапуск экрана
+        });
 	}
 
     private void showLanguageSelectionDialog() {
@@ -142,6 +163,20 @@ public class VARTHSettingsActivity extends AppCompatActivity {
             VGlobalDepth.detach();       // выключить эффект
             depthApplied = false;
         }
+    }
+    private int currentThemeSelection() {
+        if (v.rbLight.isChecked()) return 1;
+        if (v.rbDark.isChecked())  return 2;
+        return 0; // System
+    }
+
+    public static void applyTheme(int mode) {
+        int m = (mode == 1)
+                ? AppCompatDelegate.MODE_NIGHT_NO
+                : (mode == 2)
+                    ? AppCompatDelegate.MODE_NIGHT_YES
+                    : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+        AppCompatDelegate.setDefaultNightMode(m);
     }
 	
 }
