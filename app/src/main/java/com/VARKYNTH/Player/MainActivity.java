@@ -173,8 +173,8 @@ public class MainActivity extends AppCompatActivity {
 	
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
-        int savedMode = getSharedPreferences("settings", MODE_PRIVATE).getInt("theme_mode", 0);
-VARTHSettingsActivity.applyTheme(savedMode);
+		int savedMode = getSharedPreferences("settings", MODE_PRIVATE).getInt("theme_mode", 0);
+		VARTHSettingsActivity.applyTheme(savedMode);
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.main);
 		
@@ -530,11 +530,11 @@ VARTHSettingsActivity.applyTheme(savedMode);
 		Set<String> set = SynMusic.getStringSet("paths", new HashSet<>());
 		ServiceBind_Start();
 	}
-
-@Override
-protected void onPause() {
-    super.onPause();
-}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
 	
 	@Override
 	protected void onStart() {
@@ -581,11 +581,11 @@ protected void onPause() {
 			v.name_music.setText(title);
 			v.duration_music.setText(artist);
 			if (duration > 0) {
-    v.slider_music.setValueFrom(0f);
-    v.slider_music.setValueTo(duration);
-    // нет currentMs в onResume — не трогаем value, или можешь поставить 0f:
-    // v.slider_music.setValue(0f);
-}
+				v.slider_music.setValueFrom(0f);
+				v.slider_music.setValueTo(duration);
+				// нет currentMs в onResume — не трогаем value, или можешь поставить 0f:
+				// v.slider_music.setValue(0f);
+			}
 			songPosition = position;
 		}
 	}
@@ -646,6 +646,7 @@ protected void onPause() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){ String[] permissions = new String[]{ 
 				android.Manifest.permission.READ_MEDIA_AUDIO, 
 				android.Manifest.permission.POST_NOTIFICATIONS,
+                android.Manifest.permission.RECORD_AUDIO,
 			};
 			List<String> permissionsTORequest = new ArrayList<>(); 
 			for (String permission : permissions){ 
@@ -897,6 +898,7 @@ protected void onPause() {
 			@Override
 			public void onClick(View _view) {
 				onConfirmDeleteFromDialog();
+                getAllSongs();
 			}
 		});
 		c2.setOnClickListener(new View.OnClickListener() {
@@ -1022,10 +1024,10 @@ protected void onPause() {
 			songPosition = pos; // если нужно double: songPosition = (double) pos;
 			
 			if (totalMs > 0) {
-    v.slider_music.setValueFrom(0f);
-    v.slider_music.setValueTo(totalMs);
-    v.slider_music.setValue(currentMs);
-}
+				v.slider_music.setValueFrom(0f);
+				v.slider_music.setValueTo(totalMs);
+				v.slider_music.setValue(currentMs);
+			}
 			
 			getMusicTime(v.timestart, currentMs);
 			getMusicTime(v.timeoff,  totalMs);
@@ -1161,10 +1163,9 @@ protected void onPause() {
 				}
 			});
 			linear1.setOnLongClickListener(vLong -> {
+				SynD_C_List();
 				pendingDeletePos = _position;
 				pendingSharePos = _position;
-				SynD_C_List();
-				
 				return true; // long-click consumed
 			});
 		}

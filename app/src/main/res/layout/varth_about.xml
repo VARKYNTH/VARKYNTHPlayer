@@ -33,14 +33,14 @@
 			android:layout_height="wrap_content"
 			android:padding="8dp"
 			android:text="@string/app_name"
-			android:textSize="14sp"
+			android:textSize="16sp"
 			android:textStyle="bold" />
 		<com.google.android.material.textview.MaterialTextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:padding="8dp"
 			android:text="Copyright © 2025 by VARKYNTH"
-			android:textSize="12sp"
+			android:textSize="14sp"
 			android:textStyle="bold"
 			android:textColor="?colorError" />
 		<com.google.android.material.card.MaterialCardView
@@ -49,7 +49,7 @@
 			app:cardElevation="10dp"
 			app:cardCornerRadius="20dp"
             app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutline">
+            app:strokeColor="?attr/colorOutline">
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
 					android:layout_height="wrap_content"
 					android:padding="8dp"
 					android:text="@string/gratitude"
-					android:textSize="14sp"
+					android:textSize="16sp"
 					android:textStyle="bold" />
 				<com.google.android.material.card.MaterialCardView
                 android:id="@+id/dev_owner_click"
@@ -88,13 +88,13 @@
 							android:layout_height="wrap_content"
 							android:padding="8dp"
 							android:text="@string/developer_synorix"
-							android:textSize="12sp"
+							android:textSize="14sp"
 							android:textStyle="bold"
 							android:layout_weight="1" />
 					</LinearLayout>
 				</com.google.android.material.card.MaterialCardView>
 				<com.google.android.material.card.MaterialCardView
-                android:id="@+id/dev_anna_click"
+                    android:id="@+id/dev_anna_click"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginTop="5dp"
@@ -118,7 +118,7 @@
 							android:layout_height="wrap_content"
 							android:padding="8dp"
 							android:text="@string/developer_anna"
-							android:textSize="12sp"
+							android:textSize="14sp"
 							android:textStyle="bold"
 							android:layout_weight="1" />
 					</LinearLayout>

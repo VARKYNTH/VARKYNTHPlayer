@@ -35,13 +35,13 @@ public class VARTHFxActivity extends AppCompatActivity {
 	private boolean suppressFxUiEvents = false;
 	
 	private AllId.FxViewId v;
-    
-    private SharedPreferences prefs;
-    
-    private boolean depthApplied = false;
 	
-    private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
-    
+	private SharedPreferences prefs;
+	
+	private boolean depthApplied = false;
+	
+	private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
+	
 	private final android.content.ServiceConnection conn = new android.content.ServiceConnection() {
 		@Override public void onServiceConnected(android.content.ComponentName name, android.os.IBinder binder) {
 			VARTHMusicService.MusicBinder b = (VARTHMusicService.MusicBinder) binder;
@@ -58,16 +58,16 @@ public class VARTHFxActivity extends AppCompatActivity {
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.varth_fx);
-        
-        prefs = getSharedPreferences("vplayer_prefs", MODE_PRIVATE);
-
-        applyDepthFromPrefs();
-
-        // Живое обновление при смене настройки в SettingsActivity
-        prefListener = (sp, key) -> {
-            if ("global_depth_enabled".equals(key)) applyDepthFromPrefs();
-        };
-        prefs.registerOnSharedPreferenceChangeListener(prefListener);
+		
+		prefs = getSharedPreferences("vplayer_prefs", MODE_PRIVATE);
+		
+		applyDepthFromPrefs();
+		
+		// Живое обновление при смене настройки в SettingsActivity
+		prefListener = (sp, key) -> {
+			if ("global_depth_enabled".equals(key)) applyDepthFromPrefs();
+		};
+		prefs.registerOnSharedPreferenceChangeListener(prefListener);
 		
 		VFont.boldAll(this, findViewById(android.R.id.content));
 		
@@ -156,7 +156,7 @@ public class VARTHFxActivity extends AppCompatActivity {
 	private void rebuildEqBands() {
 		if (!bound || service == null || v.eq_bands_container == null) return;
 		v.eq_bands_container.removeAllViews();
-        
+		
 		short bands = 0;
 		int[] range = new int[]{-1500, 1500};
 		try {
@@ -176,7 +176,7 @@ public class VARTHFxActivity extends AppCompatActivity {
 			s.setValueFrom(range[0]);
 			s.setValueTo(range[1]);
 			s.setStepSize(1f);
-            
+			
 			int cur = 0;
 			try { cur = service.getEqBandLevelSafe(b); } catch (Throwable ignored) {}
 			s.setValue(cur);
@@ -200,7 +200,7 @@ public class VARTHFxActivity extends AppCompatActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-        applyDepthFromPrefs();
+		applyDepthFromPrefs();
 		// НИЧЕГО не стартуем, просто привязываемся
 		bindService(new Intent(this, VARTHMusicService.class), conn, Context.BIND_AUTO_CREATE);
 	}
@@ -208,25 +208,25 @@ public class VARTHFxActivity extends AppCompatActivity {
 	@Override
 	public void onStop() {
 		super.onStop();
-        prefs.unregisterOnSharedPreferenceChangeListener(prefListener);
-        if (depthApplied) {
-            VGlobalDepth.detach();
-            depthApplied = false;
-        }
+		prefs.unregisterOnSharedPreferenceChangeListener(prefListener);
+		if (depthApplied) {
+			VGlobalDepth.detach();
+			depthApplied = false;
+		}
 		if (bound) {
 			unbindService(conn);
 			bound = false;
 		}
 	}
-    private void applyDepthFromPrefs() {
-        boolean enabled = prefs.getBoolean("global_depth_enabled", false); // default OFF
-        if (enabled && !depthApplied) {
-            VGlobalDepth.attach(this);   // включить эффект
-            depthApplied = true;
-        } else if (!enabled && depthApplied) {
-            VGlobalDepth.detach();       // выключить эффект
-            depthApplied = false;
-        }
-    }
+	private void applyDepthFromPrefs() {
+		boolean enabled = prefs.getBoolean("global_depth_enabled", false); // default OFF
+		if (enabled && !depthApplied) {
+			VGlobalDepth.attach(this);   // включить эффект
+			depthApplied = true;
+		} else if (!enabled && depthApplied) {
+			VGlobalDepth.detach();       // выключить эффект
+			depthApplied = false;
+		}
+	}
 	
 }

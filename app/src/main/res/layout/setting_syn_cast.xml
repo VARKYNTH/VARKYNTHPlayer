@@ -15,7 +15,7 @@
 		app:cardElevation="10dp"
 		app:cardCornerRadius="20dp"
         app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutline">
+        app:strokeColor="?attr/colorOutline">
 		<LinearLayout
 			android:id="@+id/l1"
 			android:layout_width="match_parent"
@@ -28,7 +28,7 @@
 				android:layout_height="wrap_content"
 				android:padding="8dp"
 				android:text="@string/text_quick_settings"
-				android:textSize="14sp"
+				android:textSize="16sp"
 				android:textStyle="bold"
 				android:textColor="?colorOnSurface" />
 			<com.google.android.material.card.MaterialCardView
@@ -48,7 +48,7 @@
 					android:layout_height="wrap_content"
 					android:padding="8dp"
 					android:text="@string/text_quick_settings_button"
-					android:textSize="12sp"
+					android:textSize="14sp"
 					android:textStyle="bold"
 					android:textColor="?colorOnSurface" />
 			</com.google.android.material.card.MaterialCardView>
@@ -69,7 +69,7 @@
 					android:layout_height="wrap_content"
 					android:padding="8dp"
 					android:text="@string/donate"
-					android:textSize="12sp"
+					android:textSize="14sp"
 					android:textStyle="bold"
 					android:textColor="?colorOnSurface" />
 			</com.google.android.material.card.MaterialCardView>
@@ -90,7 +90,7 @@
 					android:layout_height="wrap_content"
 					android:padding="8dp"
 					android:text="@string/about"
-					android:textSize="12sp"
+					android:textSize="14sp"
 					android:textStyle="bold"
 					android:textColor="?colorOnSurface" />
 			</com.google.android.material.card.MaterialCardView>

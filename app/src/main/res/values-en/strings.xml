@@ -18,8 +18,4 @@
     <string name="audio_settings">Audio Settings</string>
     <string name="soon">Soon...</string>
     <string name="FX">FX</string>
-    
-    <string name="dialog_language_title">Select Language</string>
-    <string name="dialog_language_english">English</string>
-    <string name="dialog_language_russian">Russian</string>
 </resources>

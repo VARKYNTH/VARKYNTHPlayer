@@ -15,7 +15,7 @@
         app:cardElevation="10dp"
         app:cardCornerRadius="25dp"
         app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutline">
+        app:strokeColor="?attr/colorOutline">
         <LinearLayout
             android:id="@+id/linear1"
             android:layout_width="match_parent"
@@ -55,7 +55,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="TextView"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="?colorOnSurface"
                         android:lines="1"
@@ -74,7 +74,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="TextView"
-                        android:textSize="10sp"
+                        android:textSize="14sp"
                         android:textStyle="bold"
                         android:textColor="?colorOnSurfaceVariant" />
                     <com.google.android.material.textview.MaterialTextView
@@ -84,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="8dp"
                         android:text="TextView"
-                        android:textSize="10sp"
+                        android:textSize="14sp"
                         android:textStyle="bold"
                         android:textColor="?colorOnSurfaceVariant" />
                 </LinearLayout>

@@ -41,7 +41,6 @@ public class VARTHMusicService extends Service {
 		}
 	};
 	
-	
 	private final BroadcastReceiver toggleReceiver = new BroadcastReceiver() {
 		@Override public void onReceive(Context context, Intent intent) {
 			if (core == null) return;

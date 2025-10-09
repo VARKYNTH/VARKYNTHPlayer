@@ -17,8 +17,4 @@
     <string name="audio_settings">Настройки Аудио</string>
     <string name="soon">Скоро...</string>
     <string name="FX">FX</string>
-    
-    <string name="dialog_language_title">Выбрать язык</string>
-    <string name="dialog_language_english">Английский</string>
-    <string name="dialog_language_russian">Русский</string>
 </resources>

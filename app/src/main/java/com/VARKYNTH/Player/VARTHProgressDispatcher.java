@@ -41,7 +41,7 @@ final class VARTHProgressDispatcher {
                 });
             }
         };
-        timer.scheduleAtFixedRate(task, 0, 500);
+        timer.scheduleAtFixedRate(task, 80, 500);
     }
 
     void stop(){

@@ -27,7 +27,7 @@
             app:cardElevation="10dp"
             app:cardCornerRadius="20dp"
             app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutline">
+            app:strokeColor="?attr/colorOutline">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -52,7 +52,7 @@
                     app:cardElevation="10dp"
                     app:cardCornerRadius="20dp"
                     app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutline">
+                    app:strokeColor="?attr/colorOutline">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -63,12 +63,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Dolby"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
                         <com.google.android.material.textview.MaterialTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Loudness"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
                         <com.google.android.material.slider.Slider
                             android:id="@+id/seek_loudness"
                             android:layout_width="match_parent"
@@ -82,7 +82,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Bass"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
                         <com.google.android.material.slider.Slider
                             android:id="@+id/seek_bass"
                             android:layout_width="match_parent"
@@ -111,7 +111,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Equalizer"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
                         <Spinner
                             android:id="@+id/sp_eq_presets"
                             android:layout_width="match_parent"
