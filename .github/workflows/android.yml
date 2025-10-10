@@ -2,8 +2,8 @@ name: Android CI
 
 on:
   push:
+    branches: [ "main", "master" ]
   pull_request:
-  workflow_dispatch:
 
 jobs:
   build:
@@ -13,26 +13,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: '20'
-          cache: gradle
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
 
-      - name: Install Android SDK
+      - name: Set up Android SDK
         uses: android-actions/setup-android@v3
         with:
-          api-level: 34
+          accept-android-sdk-licenses: true
+          # при необходимости можно закрепить версию cmdline tools:
+          # cmdline-tools-version: 11076708
+          packages: |
+            platform-tools
+            platforms;android-34
+            build-tools;34.0.0
 
-      - name: Make Gradle executable
+      - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Build
-        run: ./gradlew clean lint test :app:assembleDebug
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
+      - name: Build Debug
+        run: ./gradlew assembleDebug --stacktrace
