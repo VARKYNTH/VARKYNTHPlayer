@@ -1,5 +1,5 @@
 <resources>
-    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="AppTheme" parent="Theme.Material3Expressive.DayNight.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
@@ -15,9 +15,5 @@
     <style name="AppTheme.DebugActivity" parent="AppTheme">
         <item name="windowActionBar">true</item>
         <item name="windowNoTitle">false</item>
-    </style>
-    <style name="Widget.Material3.LoadingIndicator.Contained">
-        <item name="indicatorColor">@macro/m3_comp_loading_indicator_contained_active_indicator_color</item>
-        <item name="containerColor">@macro/m3_comp_loading_indicator_contained_container_color</item>
     </style>
 </resources>

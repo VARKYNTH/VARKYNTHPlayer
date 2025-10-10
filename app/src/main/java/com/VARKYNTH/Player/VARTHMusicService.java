@@ -95,7 +95,7 @@ public class VARTHMusicService extends Service {
 		notifier = new VARTHNotificationHelper(this, mediaSession);
 		progress = new VARTHProgressDispatcher(this, core);
 	}
-   
+	
 	private boolean requestFocus(){
 		if (af == null) return true;
 		int r = af.requestAudioFocus(afc, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
@@ -162,6 +162,7 @@ public class VARTHMusicService extends Service {
 	}
 	
 	private void onTrackChanged(){
+		startPlayback();
 		mediaSession.setMetadata(core.makeMetadata());
 		updatePlaybackState();
 		updateNotification();
