@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-	compileSdk 36
+	compileSdk 34
 	
 	useLibrary 'org.apache.http.legacy'
 	
@@ -11,7 +11,7 @@ android {
 		applicationId "com.VARKYNTH.Player"
 		namespace "com.VARKYNTH.Player"
 		minSdkVersion 21
-		targetSdkVersion 36
+		targetSdkVersion 34
 		versionCode 1230
 		versionName "1.2.3.0 0329168"
 	}
