@@ -65,11 +65,10 @@ public class VARTHMusicService extends Service {
 	
 	@Override public void onCreate() {
 		super.onCreate();
-		af = (AudioManager) getSystemService(AUDIO_SERVICE);
 		
 		reg(toggleReceiver, new IntentFilter(BR_SONG_CONTROL));
 		reg(seekReceiver,  new IntentFilter(BR_SONG_SEEK));
-		
+		af = (AudioManager) getSystemService(AUDIO_SERVICE);
 		mediaSession = new MediaSessionCompat(this, "VARTHMusicService");
 		mediaSession.setActive(true);
 		mediaSession.setCallback(new MediaSessionCompat.Callback() {
@@ -95,7 +94,7 @@ public class VARTHMusicService extends Service {
 		notifier = new VARTHNotificationHelper(this, mediaSession);
 		progress = new VARTHProgressDispatcher(this, core);
 	}
-	
+   
 	private boolean requestFocus(){
 		if (af == null) return true;
 		int r = af.requestAudioFocus(afc, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
@@ -155,14 +154,12 @@ public class VARTHMusicService extends Service {
 			core.shuffle = !core.shuffle;
 			updateNotification();
 		}
-		
 		// прогресс-тикер
 		progress.start(core.list, core.position);
 		return START_NOT_STICKY;
 	}
 	
 	private void onTrackChanged(){
-		startPlayback();
 		mediaSession.setMetadata(core.makeMetadata());
 		updatePlaybackState();
 		updateNotification();

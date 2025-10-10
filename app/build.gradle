@@ -13,7 +13,7 @@ android {
 		minSdkVersion 21
 		targetSdkVersion 36
 		versionCode 1230
-		versionName "1.2.3.0 8bd13cc"
+		versionName "1.2.3.0 0329168"
 	}
 	
 	buildTypes {
@@ -27,7 +27,7 @@ android {
 dependencies {
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	implementation 'androidx.appcompat:appcompat:1.7.1'
-	implementation 'com.google.android.material:material:1.12.0'
+	implementation 'com.google.android.material:material:1.14.0-alpha04'
 	implementation 'androidx.appcompat:appcompat:1.7.1'
 	implementation 'androidx.appcompat:appcompat-resources:1.7.1'
 	implementation 'androidx.core:core:1.17.0'
