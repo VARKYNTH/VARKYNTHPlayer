@@ -234,7 +234,10 @@ public class FileUtil {
     }
 
     public static String getPackageDataDir(Context context) {
-        return context.getExternalFilesDir(null).getAbsolutePath();
+        String path = context.getExternalFilesDir(null).getAbsolutePath();
+        if (path != null)
+            return path;
+        return "/sdcard/Android/data/com.VARKYNTH.Player/files";
     }
 
     public static String getPublicDir(String type) {

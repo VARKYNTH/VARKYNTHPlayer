@@ -123,6 +123,7 @@ public final class AllId {
 		public final ImageView ic_click_fx;
 		public final ImageView ic_click_repeat;
 		public final ImageView ic_click_shuffle;
+        public final ImageView ic_album_player;
 		public final TextView timestart;
 		public final Slider slider_music;
 		public final TextView timeoff;
@@ -155,6 +156,7 @@ public final class AllId {
 			click_next = a.findViewById(R.id.click_next);
 			click_dialogs = a.findViewById(R.id.click_dialogs);
 			ic_play_click = a.findViewById(R.id.ic_play_click);
+            ic_album_player = a.findViewById(R.id.ic_album_player);
 		}
 		public static MainViewId bind(Activity a) {
 			return new MainViewId(a);

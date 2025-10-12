@@ -11,9 +11,9 @@ android {
 		applicationId "com.VARKYNTH.Player"
 		namespace "com.VARKYNTH.Player"
 		minSdkVersion 21
-		targetSdkVersion 34
+		targetSdkVersion 36
 		versionCode 1230
-		versionName "1.2.3.0 0329168"
+		versionName "1.2.3.0 ec781fd"
 	}
 	
 	buildTypes {
@@ -27,7 +27,7 @@ android {
 dependencies {
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	implementation 'androidx.appcompat:appcompat:1.7.1'
-	implementation 'com.google.android.material:material:1.14.0-alpha04'
+	implementation 'com.google.android.material:material:1.14.0-alpha05'
 	implementation 'androidx.appcompat:appcompat:1.7.1'
 	implementation 'androidx.appcompat:appcompat-resources:1.7.1'
 	implementation 'androidx.core:core:1.17.0'

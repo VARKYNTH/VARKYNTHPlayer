@@ -6,8 +6,3 @@
 -useuniqueclassmembernames
 -allowaccessmodification
 -mergeinterfacesaggressively
-
-# Минимизировать читаемость кода
--obfuscationdictionary d.txt
--classobfuscationdictionary d.txt
--packageobfuscationdictionary d.txt

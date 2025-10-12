@@ -646,7 +646,7 @@ public class MainActivity extends AppCompatActivity {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){ String[] permissions = new String[]{ 
 				android.Manifest.permission.READ_MEDIA_AUDIO, 
 				android.Manifest.permission.POST_NOTIFICATIONS,
-                android.Manifest.permission.RECORD_AUDIO,
+				android.Manifest.permission.RECORD_AUDIO,
 			};
 			List<String> permissionsTORequest = new ArrayList<>(); 
 			for (String permission : permissions){ 
@@ -751,14 +751,14 @@ public class MainActivity extends AppCompatActivity {
 			" OR (" + android.provider.MediaStore.Audio.Media.RELATIVE_PATH + " IS NULL AND " +
 			android.provider.MediaStore.Audio.Media.DATA + " LIKE ?)" +
 			" )";
-			selArgs = new String[]{ "20000", "Music/%", musicAbs };
+			selArgs = new String[]{ "10000", "Music/%", musicAbs };
 		} else {
 			// Старые API — фильтр строго по абсолютному пути
 			selection =
 			android.provider.MediaStore.Audio.Media.IS_MUSIC + "!= 0" +
 			" AND " + android.provider.MediaStore.Audio.Media.DURATION + ">= ?" +
 			" AND " + android.provider.MediaStore.Audio.Media.DATA + " LIKE ?";
-			selArgs = new String[]{ "20000", musicAbs };
+			selArgs = new String[]{ "10000", musicAbs };
 		}
 		
 		android.database.Cursor cursor = getContentResolver().query(
@@ -788,7 +788,7 @@ public class MainActivity extends AppCompatActivity {
 				long duration = cursor.getLong(durationIdx);
 				
 				// Доп. страховка: вдруг в медиатеке затесалось лишнее
-				if (duration >= 50_000L && path != null && (path.startsWith(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/"))) {
+				if (duration >= 10_000L && path != null && (path.startsWith(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/"))) {
 					java.util.HashMap<String, Object> map = new java.util.HashMap<>();
 					map.put("Id", Id);
 					map.put("title", title);
@@ -829,6 +829,18 @@ public class MainActivity extends AppCompatActivity {
 		v.slider_music.setThumbTintList(ColorStateList.valueOf(color));
 		v.slider_music.setTrackActiveTintList(ColorStateList.valueOf(color));
 		v.slider_music.setTrackInactiveTintList(ColorStateList.valueOf(color));
+		
+		if (song_list != null && !song_list.isEmpty()) {
+			int pos = (int) songPosition; // текущая позиция
+			if (pos >= 0 && pos < song_list.size()) {
+				Object aIdObj = song_list.get(pos).get("albumId");
+				long albumIdVal = 0L;
+				if (aIdObj instanceof Number) albumIdVal = ((Number) aIdObj).longValue();
+				
+				v.ic_album_player.setImageResource(R.drawable.ic_logo); // placeholder
+				loadAlbumArtAsync(v.ic_album_player, albumIdVal);
+			}
+		}
 	}
 	
 	public void SynD_C() {
@@ -898,7 +910,7 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				onConfirmDeleteFromDialog();
-                getAllSongs();
+				getAllSongs();
 			}
 		});
 		c2.setOnClickListener(new View.OnClickListener() {

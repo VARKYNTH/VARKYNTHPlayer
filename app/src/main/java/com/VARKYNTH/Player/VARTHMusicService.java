@@ -19,6 +19,7 @@ import java.util.HashMap;
 import android.media.AudioManager;
 
 import static com.VARKYNTH.Player.VARTHConstants.*;
+import androidx.media3.common.Player;
 
 public class VARTHMusicService extends Service {
 	
@@ -29,17 +30,6 @@ public class VARTHMusicService extends Service {
 	private VARTHPlaybackCore core;
 	private VARTHNotificationHelper notifier;
 	private VARTHProgressDispatcher progress;
-	
-	// 1) AudioFocus
-	private AudioManager af;
-	private AudioManager.OnAudioFocusChangeListener afc = focus -> {
-		if (focus == AudioManager.AUDIOFOCUS_LOSS
-		|| focus == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
-			if (core != null && core.isPlaying()) { core.pause(); sendPause(); updateNotification(); }
-		} else if (focus == AudioManager.AUDIOFOCUS_GAIN) {
-			// опционально: вернуть громкость/возобновить
-		}
-	};
 	
 	private final BroadcastReceiver toggleReceiver = new BroadcastReceiver() {
 		@Override public void onReceive(Context context, Intent intent) {
@@ -68,7 +58,6 @@ public class VARTHMusicService extends Service {
 		
 		reg(toggleReceiver, new IntentFilter(BR_SONG_CONTROL));
 		reg(seekReceiver,  new IntentFilter(BR_SONG_SEEK));
-		af = (AudioManager) getSystemService(AUDIO_SERVICE);
 		mediaSession = new MediaSessionCompat(this, "VARTHMusicService");
 		mediaSession.setActive(true);
 		mediaSession.setCallback(new MediaSessionCompat.Callback() {
@@ -93,37 +82,6 @@ public class VARTHMusicService extends Service {
 		
 		notifier = new VARTHNotificationHelper(this, mediaSession);
 		progress = new VARTHProgressDispatcher(this, core);
-	}
-   
-	private boolean requestFocus(){
-		if (af == null) return true;
-		int r = af.requestAudioFocus(afc, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
-		return r == AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
-	}
-	private void abandonFocus(){ if (af != null) af.abandonAudioFocus(afc); }
-	
-	// 2) Becoming noisy
-	private final BroadcastReceiver noisy = new BroadcastReceiver() {
-		@Override public void onReceive(Context c, Intent i) {
-			if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(i.getAction())) {
-				if (core != null && core.isPlaying()) { core.pause(); sendPause(); updateNotification(); }
-			}
-		}
-	};
-	private void regNoisy(boolean on){
-		if (on) registerReceiver(noisy, new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY));
-		else try { unregisterReceiver(noisy); } catch (Exception ignore) {}
-	}
-	
-	// 3) Start with focus
-	private void startPlayback(){
-		if (requestFocus()) {
-			core.start();
-			startForegroundCompat();
-			sendPlay();
-		} else {
-			sendError(new Exception("AUDIO_FOCUS_DENIED"));
-		}
 	}
 	
 	@Override public int onStartCommand(Intent intent, int flags, int startId) {
