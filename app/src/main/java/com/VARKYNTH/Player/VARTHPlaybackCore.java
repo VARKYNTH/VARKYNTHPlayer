@@ -73,7 +73,7 @@ final class VARTHPlaybackCore {
 		int clamped = (int) Math.max(0, Math.min(ms, dur));
 		try {
 			// короткое приглушение, чтобы не хрипело на динамике
-			if (!isHeadsetOrBtConnected()) mp.setVolume(0.6f, 0.6f);
+			if (!isHeadsetOrBtConnected()) mp.setVolume(1f, 1f);
 			mp.seekTo(clamped);
 			if (!isHeadsetOrBtConnected()) {
 				new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(

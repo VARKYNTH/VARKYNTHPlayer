@@ -61,8 +61,8 @@ public class VARTHMusicService extends Service {
 		mediaSession = new MediaSessionCompat(this, "VARTHMusicService");
 		mediaSession.setActive(true);
 		mediaSession.setCallback(new MediaSessionCompat.Callback() {
-			@Override public void onPlay()  { core.resume(); updatePlaybackState(); updateNotification(); sendPlay(); }
-			@Override public void onPause() { core.pause();  updatePlaybackState(); updateNotification(); sendPause(); }
+			@Override public void onPlay()  { core.resume(); onTrackChanged(); sendPlay(); }
+			@Override public void onPause() { core.pause();  onTrackChanged(); sendPause(); }
 			@Override public void onSkipToNext() { core.next(); onTrackChanged(); }
 			@Override public void onSkipToPrevious() { core.prev(); onTrackChanged(); }
 			@Override public void onSeekTo(long pos) { core.seekToMs(pos); updatePlaybackState(); }
@@ -73,9 +73,9 @@ public class VARTHMusicService extends Service {
 		
 		fx = new VARTHEffectsManager(this);
 		core = new VARTHPlaybackCore(this, fx, new VARTHPlaybackCore.Callback() {
-			@Override public void onStarted() { updatePlaybackState(); updateNotification(); sendPlay(); }
-			@Override public void onPaused()  { updatePlaybackState(); updateNotification(); sendPause(); }
-			@Override public void onCompletedAutoNext() { updateNotification(); }
+			@Override public void onStarted() { onTrackChanged(); sendPlay(); }
+			@Override public void onPaused()  { onTrackChanged(); sendPause(); }
+			@Override public void onCompletedAutoNext() { onTrackChanged(); }
 			@Override public void onMetadata(MediaMetadataCompat meta) { mediaSession.setMetadata(meta); }
 			@Override public void onError(Exception e) { sendError(e); }
 		});
@@ -121,6 +121,7 @@ public class VARTHMusicService extends Service {
 		mediaSession.setMetadata(core.makeMetadata());
 		updatePlaybackState();
 		updateNotification();
+		progress.start(core.list, core.position); // ← ВАЖНО: новый список/позиция для BR_SONG_DATA
 	}
 	
 	private void startForegroundCompat(){
