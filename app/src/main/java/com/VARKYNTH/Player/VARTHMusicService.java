@@ -201,7 +201,7 @@ public class VARTHMusicService extends Service {
 		progress.stop();
 		try { unregisterReceiver(toggleReceiver); } catch (Exception ignored) {}
 		try { unregisterReceiver(seekReceiver); }  catch (Exception ignored) {}
-		if (core!=null) core.releasePlayer();
+		if (core!=null) { core.releasePlayer(); core.shutdownAudioThread(); }
 		if (fx!=null) fx.releaseAll();
 		if (mediaSession!=null) mediaSession.release();
 	}
