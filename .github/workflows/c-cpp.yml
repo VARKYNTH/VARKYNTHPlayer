@@ -1,23 +1,18 @@
-name: C/C++ CI
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
+name: ndk-build
+on: [push]
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v4
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+      - uses: actions/checkout@v4
+      - uses: nttld/setup-ndk@v1
+        with: { ndk-version: r26d }
+      - name: CMake (arm64)
+        run: |
+          cmake -S . -B build \
+            -DANDROID_ABI=arm64-v8a \
+            -DANDROID_PLATFORM=android-21 \
+            -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake
+          cmake --build build --config Release
+      - uses: actions/upload-artifact@v4
+        with: { name: bin-arm64, path: build }
