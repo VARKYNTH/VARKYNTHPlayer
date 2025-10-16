@@ -2,8 +2,6 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.VARKYNTH.Player">
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
@@ -53,7 +51,7 @@ android:preserveLegacyExternalStorage="true"
 			android:hardwareAccelerated="true"
 			android:supportsPictureInPicture="true"
 			android:screenOrientation="portrait"
-			android:theme="@style/AppTheme"
+			android:theme="@style/AppTheme.FullScreen"
 			android:windowSoftInputMode="stateHidden"
 			android:exported="true">
 			<intent-filter>

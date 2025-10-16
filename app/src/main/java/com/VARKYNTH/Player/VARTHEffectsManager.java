@@ -45,12 +45,6 @@ public final class VARTHEffectsManager {
 		disableSystemDolby();
 	}
 	
-	// VARTHEffectsManager.java
-	public void forceFullScaleNoLimiter() {
-		try { if (le != null) { le.setTargetGain(0); le.setEnabled(false); } } catch (Throwable ignore) {}
-		try { if (dp != null) { dp.setEnabled(false); } } catch (Throwable ignore) {}
-	}
-	
 	private void initDynamicsProcessingSafe(int sessionId) {
 		if (Build.VERSION.SDK_INT < 28) { dp = null; return; }
 		try {

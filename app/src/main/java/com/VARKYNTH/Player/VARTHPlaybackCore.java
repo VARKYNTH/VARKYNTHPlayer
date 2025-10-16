@@ -1,6 +1,5 @@
 package com.VARKYNTH.Player;
 
-import androidx.media3.common.C;
 import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
@@ -188,16 +187,9 @@ final class VARTHPlaybackCore {
 			}
 		} catch (Throwable ignore) {}
 		mp.start();
-		setHeadroomVolume(1f, 1f);
-		
 		// эффекты к новому sessionId
 		fx.attachToSession(mp.getAudioSessionId());
-		fx.forceFullScaleNoLimiter();
-		
 		cb.onMetadata(makeMetadata());
-		
-		// !!! ВАЖНО: НИКАКИХ audioThread.start() ЗДЕСЬ !!!
-		// Поток уже запущен в конструкторе.
 		
 		// === если нет RG — играем на полной ===
 		try {
@@ -210,7 +202,7 @@ final class VARTHPlaybackCore {
 				}
 			}
 		} catch (Throwable ignore) {}
-		
+		setHeadroomVolume(1f, 1f);
 		// колбеки
 		mp.setOnCompletionListener(m -> {
 			if (shuffle) nextShuffled();

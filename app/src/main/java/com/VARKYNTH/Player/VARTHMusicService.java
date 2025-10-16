@@ -19,7 +19,6 @@ import java.util.HashMap;
 import android.media.AudioManager;
 
 import static com.VARKYNTH.Player.VARTHConstants.*;
-import androidx.media3.common.Player;
 
 public class VARTHMusicService extends Service {
 	
@@ -198,10 +197,11 @@ public class VARTHMusicService extends Service {
 	
 	@Override public void onDestroy() {
 		super.onDestroy();
+        sendPause();
 		progress.stop();
+        if (core!=null) { core.releasePlayer(); core.shutdownAudioThread(); }
 		try { unregisterReceiver(toggleReceiver); } catch (Exception ignored) {}
 		try { unregisterReceiver(seekReceiver); }  catch (Exception ignored) {}
-		if (core!=null) { core.releasePlayer(); core.shutdownAudioThread(); }
 		if (fx!=null) fx.releaseAll();
 		if (mediaSession!=null) mediaSession.release();
 	}

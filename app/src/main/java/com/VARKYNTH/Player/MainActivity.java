@@ -106,7 +106,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
 import android.content.ClipData;
-import androidx.core.content.FileProvider; // fallback по file:// → content://
+import androidx.core.content.FileProvider;
 
 import com.VARKYNTH.Player.ui.VGlobalDepth;
 

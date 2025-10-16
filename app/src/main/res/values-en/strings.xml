@@ -2,11 +2,6 @@
 <resources>
     <string name="app_name" translatable="false">VARKYNTHPlayer</string>
     <!-- texts -->
-    <string name="text_quick_settings">Additional quick settings</string>
-    <string name="text_quick_settings_button">Settings</string>
-    <string name="set_language">Set language</string>
-    <string name="dismiss">Dismiss</string>
-    <string name="ok">Okay</string>
     <string name="donate">Donate</string>
     <string name="update_text">Update</string>
     <string name="delete">Delete</string>
