@@ -105,7 +105,7 @@ public class VARTHMusicService extends Service {
 				case ONE: core.repeatMode = VARTHRepeatMode.ALL; break;
 				default:  core.repeatMode = VARTHRepeatMode.OFF; break;
 			}
-			if (core.mp!=null) core.mp.setLooping(core.repeatMode == VARTHRepeatMode.ONE);
+            if (core.mp!=null) core.mp.setLooping(core.repeatMode == VARTHRepeatMode.ONE);
 			updateNotification();
 		} else if (ACTION_SHUFFLE.equals(action)) {
 			core.shuffle = !core.shuffle;
@@ -124,12 +124,15 @@ public class VARTHMusicService extends Service {
 	}
 	
 	private void startForegroundCompat(){
-		notifier.startForeground(this, core.isPlaying(), core.repeatMode);
+		
+notifier.startForeground(this, core.isPlaying(), core.repeatMode);
+
 	}
 	private void updateNotification(){
 		mediaSession.setMetadata(core.makeMetadata());
 		updatePlaybackState();
-		notifier.updateForeground(this, core.isPlaying(), core.repeatMode);
+
+notifier.updateForeground(this, core.isPlaying(), core.repeatMode);
 	}
 	private void updatePlaybackState(){
 		PlaybackStateCompat st = new PlaybackStateCompat.Builder()
@@ -199,9 +202,10 @@ public class VARTHMusicService extends Service {
 		super.onDestroy();
         sendPause();
 		progress.stop();
-        if (core!=null) { core.releasePlayer(); core.shutdownAudioThread(); }
+        if (core!=null) { core.releasePlayer();}
 		try { unregisterReceiver(toggleReceiver); } catch (Exception ignored) {}
 		try { unregisterReceiver(seekReceiver); }  catch (Exception ignored) {}
+    	if (core!=null) { core.releasePlayer(); core.shutdownAudioThread(); }
 		if (fx!=null) fx.releaseAll();
 		if (mediaSession!=null) mediaSession.release();
 	}

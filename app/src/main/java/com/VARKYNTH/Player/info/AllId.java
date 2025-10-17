@@ -58,25 +58,25 @@ public final class AllId {
 		public final LinearLayout topbarother;
 		public final com.google.android.material.card.MaterialCardView fx_card;
 		public final com.google.android.material.card.MaterialCardView t_language;
-        public final com.google.android.material.card.MaterialCardView ide_card;
-        public final RadioGroup groupTheme;
-         public final com.google.android.material.radiobutton.MaterialRadioButton rbLight;
-          public final com.google.android.material.radiobutton.MaterialRadioButton rbDark;
-    public final com.google.android.material.radiobutton.MaterialRadioButton rbSystem;
-    public final MaterialButton btnApplyTheme;
+		public final com.google.android.material.card.MaterialCardView ide_card;
+		public final RadioGroup groupTheme;
+		public final com.google.android.material.radiobutton.MaterialRadioButton rbLight;
+		public final com.google.android.material.radiobutton.MaterialRadioButton rbDark;
+		public final com.google.android.material.radiobutton.MaterialRadioButton rbSystem;
+		public final MaterialButton btnApplyTheme;
 		
 		private SettingsViewId(Activity a) {
 			
 			topbarother = a.findViewById(R.id.topbarother);
 			fx_card = a.findViewById(R.id.fx_card);
-            ide_card = a.findViewById(R.id.ide_card);
+			ide_card = a.findViewById(R.id.ide_card);
 			t_language = a.findViewById(R.id.t_language);
-            groupTheme = a.findViewById(R.id.groupTheme);
-        rbSystem   = a.findViewById(R.id.rbSystem);
-        rbLight    = a.findViewById(R.id.rbLight);
-        rbDark     = a.findViewById(R.id.rbDark);
-        btnApplyTheme = a.findViewById(R.id.btnApplyTheme);
-            
+			groupTheme = a.findViewById(R.id.groupTheme);
+			rbSystem   = a.findViewById(R.id.rbSystem);
+			rbLight    = a.findViewById(R.id.rbLight);
+			rbDark     = a.findViewById(R.id.rbDark);
+			btnApplyTheme = a.findViewById(R.id.btnApplyTheme);
+			
 		}
 		public static SettingsViewId bind(Activity a) {
 			return new SettingsViewId(a);
@@ -123,10 +123,16 @@ public final class AllId {
 		public final ImageView ic_click_fx;
 		public final ImageView ic_click_repeat;
 		public final ImageView ic_click_shuffle;
-        public final ImageView ic_album_player;
+		public final ImageView ic_album_player;
+        public final ImageView info_audio;
+        public final ImageView ic_lyi;
 		public final TextView timestart;
 		public final Slider slider_music;
 		public final TextView timeoff;
+		public final TextView tvDlgTitle;
+		public final TextView tvDlgChangelog;
+		public final com.google.android.material.button.MaterialButton btnUpdateView;
+		public final com.google.android.material.button.MaterialButton btnLaterView;
 		public final com.google.android.material.card.MaterialCardView click_prev;
 		public final com.google.android.material.card.MaterialCardView click_play;
 		public final com.google.android.material.card.MaterialCardView click_next;
@@ -135,6 +141,10 @@ public final class AllId {
 		
 		private MainViewId(Activity a) {
 			
+			btnUpdateView = a.findViewById(R.id.btnUpdate);
+			btnLaterView = a.findViewById(R.id.btnLater);
+			tvDlgTitle = a.findViewById(R.id.tvTitle);
+			tvDlgChangelog = a.findViewById(R.id.tvChangelog);
 			topbarmain = a.findViewById(R.id.topbarmain);
 			swipe_refresh_music_list = a.findViewById(R.id.swipe_refresh_music_list);
 			content_root = a.findViewById(R.id.content_root);
@@ -146,6 +156,8 @@ public final class AllId {
 			name_music_player = a.findViewById(R.id.name_music_player);
 			name_duration_player = a.findViewById(R.id.name_duration_player);
 			ic_click_fx = a.findViewById(R.id.ic_click_fx);
+            info_audio = a.findViewById(R.id.info_audio);
+            ic_lyi = a.findViewById(R.id.ic_lyi);
 			ic_click_repeat = a.findViewById(R.id.ic_click_repeat);
 			ic_click_shuffle = a.findViewById(R.id.ic_click_shuffle);
 			timestart = a.findViewById(R.id.timestart);
@@ -156,13 +168,13 @@ public final class AllId {
 			click_next = a.findViewById(R.id.click_next);
 			click_dialogs = a.findViewById(R.id.click_dialogs);
 			ic_play_click = a.findViewById(R.id.ic_play_click);
-            ic_album_player = a.findViewById(R.id.ic_album_player);
+			ic_album_player = a.findViewById(R.id.ic_album_player);
 		}
 		public static MainViewId bind(Activity a) {
 			return new MainViewId(a);
 		}
 	}
-    public static final class SettingsViewExperimentalId {
+	public static final class SettingsViewExperimentalId {
 		
 		public final LinearLayout topbarother;
 		public final com.google.android.material.switchmaterial.SwitchMaterial ide_sw;

@@ -11,6 +11,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 final class VARTHProgressDispatcher {
+	
 	private final Context ctx;
 	private final VARTHPlaybackCore core;
 	private final Handler handler = new Handler(Looper.getMainLooper());
@@ -18,6 +19,7 @@ final class VARTHProgressDispatcher {
 	private TimerTask task;
 	
 	VARTHProgressDispatcher(Context ctx, VARTHPlaybackCore core){
+		
 		this.ctx = ctx.getApplicationContext();
 		this.core = core;
 	}

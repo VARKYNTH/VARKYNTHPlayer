@@ -81,6 +81,14 @@
                     android:layout_marginRight="8dp"
                     android:src="@drawable/ic_fx"
                     android:scaleType="centerInside" />
+                <ImageView
+                    android:id="@+id/info_audio"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:src="@drawable/ic_info_audio"
+                    android:scaleType="centerInside" />    
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"

@@ -28,10 +28,11 @@
             app:cardElevation="2dp"
             app:cardCornerRadius="15dp">
             <ImageView
+                android:id="@+id/ic_lyi"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:src="@drawable/ic_logo"
-                android:scaleType="centerInside" />
+                android:scaleType="centerCrop" />
         </com.google.android.material.card.MaterialCardView>
         <LinearLayout
             android:layout_width="wrap_content"

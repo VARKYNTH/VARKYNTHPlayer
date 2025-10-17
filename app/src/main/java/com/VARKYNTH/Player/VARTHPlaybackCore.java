@@ -11,6 +11,7 @@ import android.os.PowerManager;
 import android.support.v4.media.MediaMetadataCompat;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -141,11 +142,54 @@ final class VARTHPlaybackCore {
 	}
 	
 	void start(){ runAudio(this::playFromCurrent); }
-	void next(){  runAudio(() -> { if(!valid())return; position = (position>=list.size()-1)?0:position+1; playFromCurrent(); }); }
-	void prev(){  runAudio(() -> { if(!valid())return; position = (position<=0)?list.size()-1:position-1; playFromCurrent(); }); }
-	void nextShuffled(){ runAudio(() -> { if(!valid())return; int sz=list.size(),np=position,tries=0;
-			if(sz>1){ do{ np=(int)Math.floor(Math.random()*sz);} while(np==position && ++tries<10); }
-			position=np; playFromCurrent(); });
+	
+	// ПОЛНЫЙ КОД ДЛЯ ЗАМЕНЫ МЕТОДОВ next(), prev() и nextShuffled()
+	// Найдите строки 146-152 в VARTHPlaybackCore.java и замените:
+	
+	// ========== ИЗМЕНЕНИЕ 1: Методы next() и prev() (строки ~146-152) ==========
+	
+	void next(){  
+		runAudio(() -> { 
+			if(!valid()) return; 
+			if (shuffle) {
+				// Случайный трек
+				int sz = list.size();
+				int np = position;
+				int tries = 0;
+				if(sz > 1) { 
+					do { 
+						np = (int)Math.floor(Math.random() * sz);
+					} while(np == position && ++tries < 10); 
+				}
+				position = np;
+			} else {
+				// Последовательный трек
+				position = (position >= list.size()-1) ? 0 : position+1;
+			}
+			playFromCurrent(); 
+		}); 
+	}
+	
+	void prev(){  
+		runAudio(() -> { 
+			if(!valid()) return; 
+			if (shuffle) {
+				// Случайный трек
+				int sz = list.size();
+				int np = position;
+				int tries = 0;
+				if(sz > 1) { 
+					do { 
+						np = (int)Math.floor(Math.random() * sz);
+					} while(np == position && ++tries < 10); 
+				}
+				position = np;
+			} else {
+				// Последовательный трек
+				position = (position <= 0) ? list.size()-1 : position-1;
+			}
+			playFromCurrent(); 
+		}); 
 	}
 	
 	private boolean valid(){ return list!=null && !list.isEmpty(); }
@@ -190,59 +234,229 @@ final class VARTHPlaybackCore {
 		// эффекты к новому sessionId
 		fx.attachToSession(mp.getAudioSessionId());
 		cb.onMetadata(makeMetadata());
-		
-		// === если нет RG — играем на полной ===
+		logAudioCapabilities();
+
+// Проверяем Hi-Res режим
+if (isHiResCapable()) {
+    android.util.Log.i("VARTH-HiFi", "Hi-Res Audio device detected!");
+}
+		// === если нет RG — играть на полной ===
 		try {
 			if (forceFullScaleIfNoRG && uri != null && !hasReplayGainTags(uri)) {
 				mp.setVolume(1f, 1f); // полная громкость
-				try {
-					fx.getClass().getMethod("forceFullScaleNoLimiter").invoke(fx);
-				} catch (Throwable ignore) {
-					// метода нет — просто игнор, громкость уже 1.0
-				}
 			}
 		} catch (Throwable ignore) {}
 		setHeadroomVolume(1f, 1f);
 		// колбеки
 		mp.setOnCompletionListener(m -> {
-			if (shuffle) nextShuffled();
-			else next();
+			next();
 			cb.onCompletedAutoNext();
 		});
 		
 		cb.onStarted();
 	}
 	
-	private void applyAudioAttrs(MediaPlayer m) {
-		try {
-			if (Build.VERSION.SDK_INT >= 21) {
-				m.setAudioAttributes(new AudioAttributes.Builder()
-				.setUsage(AudioAttributes.USAGE_MEDIA)
-				.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-				.build());
-			} else {
-				m.setAudioStreamType(AudioManager.STREAM_MUSIC);
-			}
-		} catch (Throwable ignored) {}
-		try {
-			if (Build.VERSION.SDK_INT >= 23) {
-				android.media.AudioManager am = (android.media.AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
-				if (am != null) {
-					for (android.media.AudioDeviceInfo d : am.getDevices(android.media.AudioManager.GET_DEVICES_OUTPUTS)) {
-						if (d.getType() == android.media.AudioDeviceInfo.TYPE_USB_HEADSET ||
-						d.getType() == android.media.AudioDeviceInfo.TYPE_USB_DEVICE) {
-							try {
-								// не на всех сборках доступно, поэтому через рефлексию, чтобы не ломать API
-								java.lang.reflect.Method ma = mp.getClass().getMethod("setPreferredDevice", android.media.AudioDeviceInfo.class);
-								ma.invoke(mp, d);
-							} catch (Throwable ignored) {}
-							break;
-						}
-					}
-				}
-			}
-		} catch (Throwable ignored) {}    
-	}
+	// Замените метод applyAudioAttrs() на этот улучшенный вариант:
+
+private void applyAudioAttrs(MediaPlayer m) {
+    try {
+        if (Build.VERSION.SDK_INT >= 21) {
+            AudioAttributes.Builder builder = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC);
+            
+            // Hi-Res Audio flags (API 29+)
+            if (Build.VERSION.SDK_INT >= 29) {
+                builder.setAllowedCapturePolicy(AudioAttributes.ALLOW_CAPTURE_BY_NONE);
+                
+                // Попытка активировать Hi-Res через скрытые флаги
+                try {
+                    // FLAG_LOW_LATENCY = 0x100
+                    // FLAG_DEEP_BUFFER = 0x200 (для качественного воспроизведения)
+                    java.lang.reflect.Method setFlags = builder.getClass().getMethod("setFlags", int.class);
+                    setFlags.invoke(builder, 0x200); // DEEP_BUFFER для качества
+                } catch (Throwable ignored) {}
+            }
+            
+            m.setAudioAttributes(builder.build());
+        } else {
+            m.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        }
+    } catch (Throwable ignored) {}
+    
+    // Установка предпочитаемого устройства (USB DAC, Hi-Res наушники)
+    try {
+        if (Build.VERSION.SDK_INT >= 23) {
+            android.media.AudioManager am = (android.media.AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
+            if (am != null) {
+                // Ищем USB, Hi-Res и высококачественные устройства
+                android.media.AudioDeviceInfo preferredDevice = null;
+                int highestSampleRate = 0;
+                
+                for (android.media.AudioDeviceInfo d : am.getDevices(android.media.AudioManager.GET_DEVICES_OUTPUTS)) {
+                    int type = d.getType();
+                    
+                    // Приоритет USB DAC и Hi-Res устройствам
+                    if (type == android.media.AudioDeviceInfo.TYPE_USB_HEADSET ||
+                        type == android.media.AudioDeviceInfo.TYPE_USB_DEVICE) {
+                        
+                        // Проверяем поддержку высоких частот дискретизации
+                        int[] sampleRates = d.getSampleRates();
+                        if (sampleRates != null && sampleRates.length > 0) {
+                            for (int rate : sampleRates) {
+                                if (rate > highestSampleRate) {
+                                    highestSampleRate = rate;
+                                    preferredDevice = d;
+                                }
+                            }
+                        } else {
+                            // Если частоты не указаны, всё равно выбираем USB
+                            preferredDevice = d;
+                        }
+                    }
+                }
+                
+                // Устанавливаем предпочитаемое устройство
+                if (preferredDevice != null) {
+                    try {
+                        if (Build.VERSION.SDK_INT >= 23) {
+                            m.setPreferredDevice(preferredDevice);
+                        } else {
+                            // Fallback через рефлексию для старых API
+                            java.lang.reflect.Method setMethod = m.getClass()
+                                .getMethod("setPreferredDevice", android.media.AudioDeviceInfo.class);
+                            setMethod.invoke(m, preferredDevice);
+                        }
+                    } catch (Throwable ignored) {}
+                }
+            }
+        }
+    } catch (Throwable ignored) {}
+    
+    // Включение Hi-Res Audio через системные свойства (для некоторых производителей)
+    try {
+        if (Build.VERSION.SDK_INT >= 23) {
+            // Sony Hi-Res
+            try {
+                Class<?> clazz = Class.forName("android.media.AudioSystem");
+                java.lang.reflect.Method method = clazz.getMethod("setParameters", String.class);
+                method.invoke(null, "hifi_audio_mode=on");
+            } catch (Throwable ignored) {}
+            
+            // Samsung Adapt Sound / UHQ Upscaler
+            try {
+                android.media.AudioManager am = (android.media.AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
+                if (am != null) {
+                    am.setParameters("l_uhqa_support=on");
+                }
+            } catch (Throwable ignored) {}
+        }
+    } catch (Throwable ignored) {}
+}
+
+// Добавьте новый метод для проверки Hi-Res возможностей устройства:
+
+private boolean isHiResCapable() {
+    try {
+        if (Build.VERSION.SDK_INT >= 23) {
+            android.media.AudioManager am = (android.media.AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
+            if (am == null) return false;
+            
+            for (android.media.AudioDeviceInfo d : am.getDevices(android.media.AudioManager.GET_DEVICES_OUTPUTS)) {
+                int type = d.getType();
+                
+                // USB DAC или Hi-Res устройства
+                if (type == android.media.AudioDeviceInfo.TYPE_USB_HEADSET ||
+                    type == android.media.AudioDeviceInfo.TYPE_USB_DEVICE) {
+                    
+                    int[] sampleRates = d.getSampleRates();
+                    if (sampleRates != null) {
+                        for (int rate : sampleRates) {
+                            // Hi-Res = 96kHz и выше
+                            if (rate >= 96000) {
+                                return true;
+                            }
+                        }
+                    }
+                    
+                    // Проверка форматов (24-bit и выше)
+                    int[] encodings = d.getEncodings();
+                    if (encodings != null) {
+                        for (int enc : encodings) {
+                            // AudioFormat.ENCODING_PCM_24BIT_PACKED = 21 (API 31+)
+                            // AudioFormat.ENCODING_PCM_32BIT = 22 (API 31+)
+                            if (enc == 21 || enc == 22) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } catch (Throwable ignored) {}
+    return false;
+}
+
+// Добавьте метод для логирования аудио возможностей (для отладки):
+
+private void logAudioCapabilities() {
+    try {
+        if (Build.VERSION.SDK_INT >= 23) {
+            android.media.AudioManager am = (android.media.AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
+            if (am == null) return;
+            
+            android.util.Log.d("VARTH-HiFi", "=== Audio Devices Info ===");
+            
+            for (android.media.AudioDeviceInfo d : am.getDevices(android.media.AudioManager.GET_DEVICES_OUTPUTS)) {
+                String typeName = getDeviceTypeName(d.getType());
+                android.util.Log.d("VARTH-HiFi", "Device: " + typeName + " (ID: " + d.getId() + ")");
+                
+                int[] sampleRates = d.getSampleRates();
+                if (sampleRates != null && sampleRates.length > 0) {
+                    StringBuilder rates = new StringBuilder("  Sample Rates: ");
+                    for (int rate : sampleRates) {
+                        rates.append(rate / 1000).append("kHz ");
+                    }
+                    android.util.Log.d("VARTH-HiFi", rates.toString());
+                }
+                
+                int[] encodings = d.getEncodings();
+                if (encodings != null && encodings.length > 0) {
+                    StringBuilder encs = new StringBuilder("  Encodings: ");
+                    for (int enc : encodings) {
+                        encs.append(getEncodingName(enc)).append(" ");
+                    }
+                    android.util.Log.d("VARTH-HiFi", encs.toString());
+                }
+            }
+        }
+    } catch (Throwable ignored) {}
+}
+
+private String getDeviceTypeName(int type) {
+    switch (type) {
+        case 1: return "EARPIECE";
+        case 2: return "SPEAKER";
+        case 3: return "WIRED_HEADSET";
+        case 4: return "WIRED_HEADPHONES";
+        case 7: return "BLUETOOTH_SCO";
+        case 8: return "BLUETOOTH_A2DP";
+        case 13: return "USB_DEVICE";
+        case 22: return "USB_HEADSET";
+        default: return "TYPE_" + type;
+    }
+}
+
+private String getEncodingName(int encoding) {
+    switch (encoding) {
+        case 2: return "PCM_16bit";
+        case 3: return "PCM_8bit";
+        case 4: return "PCM_FLOAT";
+        case 21: return "PCM_24bit";
+        case 22: return "PCM_32bit";
+        default: return "ENC_" + encoding;
+    }
+}
 	
 	private void forceHQBluetooth() {
 		try {

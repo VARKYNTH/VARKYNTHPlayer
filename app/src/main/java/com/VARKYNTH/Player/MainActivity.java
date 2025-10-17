@@ -160,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
 	private AudioManager audioManager;
 	
 	private SharedPreferences prefs;
-	
 	// поле класса
 	private ActivityResultLauncher<IntentSenderRequest> deleteRequestLauncher;
 	
@@ -178,6 +177,8 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.main);
 		
+		VARTHUpdate.startUpdateCheck(this);
+		
 		int maxMem = (int) (Runtime.getRuntime().maxMemory() / 1024);
 		int cacheSize = maxMem / 16; // ~6% памяти под мини-обложки
 		artCache = new LruCache<Long, Bitmap>(cacheSize) {
@@ -185,7 +186,6 @@ public class MainActivity extends AppCompatActivity {
 				return value.getByteCount() / 1024;
 			}
 		};
-		
 		// в onCreate(), после setContentView(...)
 		deleteRequestLauncher = registerForActivityResult(
 		new ActivityResultContracts.StartIntentSenderForResult(),
@@ -258,6 +258,13 @@ public class MainActivity extends AppCompatActivity {
 			public void onClick(View _view) {
 				SynIntent.setClass(getApplicationContext(), VARTHFxActivity.class);
 				startActivity(SynIntent);
+			}
+		});
+		
+		v.info_audio.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				new VARTHAudioInfoDialog(MainActivity.this).show();
 			}
 		});
 		
@@ -342,7 +349,6 @@ public class MainActivity extends AppCompatActivity {
 		togglePlayerView(false);
 		myPermissions();
 		getAllSongs();
-		VARTHUpdate.startUpdateCheck(this);
 		SynStyle();
 	}
 	
@@ -839,6 +845,8 @@ public class MainActivity extends AppCompatActivity {
 				
 				v.ic_album_player.setImageResource(R.drawable.ic_logo); // placeholder
 				loadAlbumArtAsync(v.ic_album_player, albumIdVal);
+				v.ic_lyi.setImageResource(R.drawable.ic_logo); // placeholder
+				loadAlbumArtAsync(v.ic_lyi, albumIdVal);
 			}
 		}
 	}

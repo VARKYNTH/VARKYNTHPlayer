@@ -1,7 +1,7 @@
 {
-  "versionCode": 2000,
-  "versionName": "2.0.0.0 Stable",
-  "changelog": "•Исправлени ошибоки\n•Улучшена оптимизация и производительность\n•Улучшен дизайн\n•Добавлена смена теми \n•Улучшено качество воспроизведения на флагманском уровне\n•Исправлены ошибки эффектов,плеера, и остальных важных файлов\n•Приложение теперь работает стабильнее и автономнее и остальные важные изменения можно было наблюдать в Commit",
-  "apkUrl": "https://github.com/VARKYNTH/VARKYNTHPlayer/releases/download/Stable2.0.0.0/VARKYNTH_Github.apk",
-  "sha256": "9662d2e0d454edc938aae1d545f2cead506e9b1dc1b09bcfefd24f77a48f662d"
+  "versionCode": 2100,
+  "versionName": "2.1.0.0 Stable",
+  "changelog": "•Исправлени ошибоки\n•Исправлена ошибка с рандом кнопкой\n•Улучшено качество воспроизведения\n•Добавлена информация о всех видах воспроизведения и форматов трека и частот",
+  "apkUrl": "https://github.com/VARKYNTH/VARKYNTHPlayer/releases/download/Stable2.1.0.0/VARKYNTH_Github.apk",
+  "sha256": "4b48a4ec8b5a7b8afe3b371e4f054d02ed33f7c628abe1bbf941e1e4f24a8f90"
 }

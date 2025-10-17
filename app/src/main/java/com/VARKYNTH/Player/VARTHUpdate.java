@@ -55,65 +55,69 @@ public class VARTHUpdate {
     }
 
     private static void showUpdateDialogFromXml(Activity act, @NonNull Info info) {
-        try {
-            LayoutInflater inflater = LayoutInflater.from(act);
-            View view = inflater.inflate(R.layout.dialog_update, null, false);
+    try {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(act);
 
-            TextView tvDlgTitle     = view.findViewById(R.id.tvTitle);
-            TextView tvDlgChangelog = view.findViewById(R.id.tvChangelog);
-            View btnLaterView       = view.findViewById(R.id.btnLater);
-            View btnUpdateView      = view.findViewById(R.id.btnUpdate);
+        // 1. Загружаем разметку
+        LayoutInflater inflater = LayoutInflater.from(act);
+        View view = inflater.inflate(R.layout.dialog_update, null);
 
-            if (tvDlgTitle != null) tvDlgTitle.setText("Доступна версия " + safe(info.versionName));
-            if (tvDlgChangelog != null) tvDlgChangelog.setText(safe(info.changelog).trim());
+        // 2. Находим элементы
+        TextView tvTitle       = view.findViewById(R.id.tvTitle);
+        TextView tvChangelog   = view.findViewById(R.id.tvChangelog);
+        com.google.android.material.button.MaterialButton btnLater  =
+                view.findViewById(R.id.btnLater);
+        com.google.android.material.button.MaterialButton btnUpdate =
+                view.findViewById(R.id.btnUpdate);
 
-            AlertDialog dlg = new MaterialAlertDialogBuilder(act)
-                    .setView(view)
-                    .setCancelable(true)
-                    .create();
+        // 3. Заполняем данными
+        tvTitle.setText("Доступна версия " + safe(info.versionName));
+        tvChangelog.setText(safe(info.changelog).trim());
 
-            if (btnLaterView != null) {
-                btnLaterView.setOnClickListener(v -> {
-                    try { dlg.dismiss(); } catch (Exception ignored) {}
-                });
+        // 4. Создаём диалог
+        AlertDialog dlg = builder
+                .setView(view)
+                .setCancelable(true)
+                .create();
+
+        // 5. Обработчики
+        btnLater.setOnClickListener(v -> dlg.dismiss());
+
+        btnUpdate.setOnClickListener(v -> {
+            btnUpdate.setEnabled(false);
+            btnUpdate.setText("Загрузка…");
+
+            if (!ensureUnknownSourcesAllowed(act)) {
+                Toast.makeText(act,
+                        "Разрешите установку из неизвестных источников и нажмите «Обновить» снова",
+                        Toast.LENGTH_LONG).show();
+                btnUpdate.setEnabled(true);
+                btnUpdate.setText("Обновить");
+                return;
             }
 
-            if (btnUpdateView != null) {
-                btnUpdateView.setOnClickListener(v -> {
-                    btnUpdateView.setEnabled(false);
-                    if (btnUpdateView instanceof TextView) ((TextView) btnUpdateView).setText("Загрузка…");
-
-                    if (!ensureUnknownSourcesAllowed(act)) {
-                        Toast.makeText(act,
-                                "Разрешите установку из неизвестных источников и нажмите «Обновить» снова",
-                                Toast.LENGTH_LONG).show();
-                        btnUpdateView.setEnabled(true);
-                        if (btnUpdateView instanceof TextView) ((TextView) btnUpdateView).setText("Обновить");
-                        return;
-                    }
-
-                    downloadAndInstall(act, info.apkUrl, new OnInstallCallback() {
-                        @Override public void onDownloadComplete() {
-                            act.runOnUiThread(() -> {
-                                try { dlg.dismiss(); } catch (Exception ignored) {}
-                                Toast.makeText(act, "Установка…", Toast.LENGTH_SHORT).show();
-                            });
-                        }
-                        @Override public void onError(String msg) {
-                            act.runOnUiThread(() -> {
-                                btnUpdateView.setEnabled(true);
-                                if (btnUpdateView instanceof TextView) ((TextView) btnUpdateView).setText("Обновить");
-                                Toast.makeText(act,
-                                        msg == null ? "Ошибка загрузки" : msg,
-                                        Toast.LENGTH_LONG).show();
-                            });
-                        }
+            downloadAndInstall(act, info.apkUrl, new OnInstallCallback() {
+                @Override public void onDownloadComplete() {
+                    act.runOnUiThread(() -> {
+                        dlg.dismiss();
+                        Toast.makeText(act, "Установка…", Toast.LENGTH_SHORT).show();
                     });
-                });
-            }
-            dlg.show();
-        } catch (Throwable ignored) {}
-    }
+                }
+                @Override public void onError(String msg) {
+                    act.runOnUiThread(() -> {
+                        btnUpdate.setEnabled(true);
+                        btnUpdate.setText("Обновить");
+                        Toast.makeText(act,
+                                msg == null ? "Ошибка загрузки" : msg,
+                                Toast.LENGTH_LONG).show();
+                    });
+                }
+            });
+        });
+
+        dlg.show();
+    } catch (Throwable ignored) {}
+}
 
     private interface OnInstallCallback {
         void onDownloadComplete();
