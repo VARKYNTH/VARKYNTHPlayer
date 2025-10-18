@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="text_quick_settings">Дополнительные быстрые настройки</string>
-    <string name="text_quick_settings_button">Настройки</string>
-    <string name="set_language">Установить язык</string>
-    <string name="dismiss">Отмена</string>
-    <string name="ok">Ок</string>
-</resources>

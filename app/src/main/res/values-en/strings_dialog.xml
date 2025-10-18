@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="dialog_language_title">Select Language</string>
-    <string name="dialog_language_english">English</string>
-    <string name="dialog_language_russian">Russian</string>
-</resources>
