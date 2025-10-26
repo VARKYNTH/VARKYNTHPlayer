@@ -1,0 +1,41 @@
+name: Build FFmpeg for Android
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        abi: [arm64-v8a, armeabi-v7a, x86_64, x86]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up NDK
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r29  # Актуально на 2025
+
+      - name: Install dependencies
+        run: sudo apt update && sudo apt install -y yasm cmake
+
+      - name: Configure CMake
+        run: |
+          mkdir build-${{ matrix.abi }}
+          cd build-${{ matrix.abi }}
+          cmake .. -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake \
+                   -DANDROID_ABI=${{ matrix.abi }} \
+                   -DANDROID_PLATFORM=android-25 \
+                   -DANDROID_NATIVE_API_LEVEL=25
+
+      - name: Build
+        run: |
+          cd build-${{ matrix.abi }}
+          make -j$(nproc)
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ffmpeg-so-${{ matrix.abi }}
+          path: build-${{ matrix.abi }}/libs/*.so
