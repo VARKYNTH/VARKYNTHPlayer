@@ -1,0 +1,14 @@
+prefix=/home/runner/work/ffmpegAndroid/ffmpegAndroid/ffmpeg-build/25/x86_64
+exec_prefix=${prefix}
+libdir=/home/runner/work/ffmpegAndroid/ffmpegAndroid/ffmpeg-build/25/x86_64/lib
+includedir=/home/runner/work/ffmpegAndroid/ffmpegAndroid/ffmpeg-build/25/x86_64/include
+
+Name: libavformat
+Description: FFmpeg container format library
+Version: 62.6.101
+Requires: 
+Requires.private: libavcodec >= 62.16.100, libswresample >= 6.2.100, libavutil >= 60.13.100
+Conflicts:
+Libs: -L${libdir}  -lavformat 
+Libs.private: -lm -latomic
+Cflags: -I${includedir}

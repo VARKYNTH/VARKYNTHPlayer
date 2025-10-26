@@ -1,0 +1,31 @@
+plugins {
+	id 'com.android.application'
+}
+
+android {
+	compileSdk 34
+	
+	useLibrary 'org.apache.http.legacy'
+	
+	defaultConfig {
+		applicationId "com.VARKYNTH.Player.Pro"
+		namespace "com.VARKYNTH.Player.Pro"
+		minSdkVersion 21
+		targetSdkVersion 36
+		versionCode 3000
+		versionName "3.0.0.0 RC1"
+	}
+	
+	buildTypes {
+		release {
+			minifyEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+		}
+	}
+}
+
+dependencies {
+	implementation fileTree(dir: 'libs', include: ['*.jar'])
+	implementation 'androidx.appcompat:appcompat:1.7.1'
+	implementation 'com.google.android.material:material:1.14.0-alpha05'
+}

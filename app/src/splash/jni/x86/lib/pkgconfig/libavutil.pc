@@ -1,0 +1,14 @@
+prefix=/home/runner/work/ffmpegAndroid/ffmpegAndroid/ffmpeg-build/25/x86
+exec_prefix=${prefix}
+libdir=/home/runner/work/ffmpegAndroid/ffmpegAndroid/ffmpeg-build/25/x86/lib
+includedir=/home/runner/work/ffmpegAndroid/ffmpegAndroid/ffmpeg-build/25/x86/include
+
+Name: libavutil
+Description: FFmpeg utility library
+Version: 60.13.100
+Requires: 
+Requires.private: 
+Conflicts:
+Libs: -L${libdir}  -lavutil 
+Libs.private: -lm -latomic -landroid -lmediandk -pthread
+Cflags: -I${includedir}

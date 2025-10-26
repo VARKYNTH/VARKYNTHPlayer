@@ -1,0 +1,14 @@
+prefix=/home/runner/work/ffmpegAndroid/ffmpegAndroid/ffmpeg-build/25/x86
+exec_prefix=${prefix}
+libdir=/home/runner/work/ffmpegAndroid/ffmpegAndroid/ffmpeg-build/25/x86/lib
+includedir=/home/runner/work/ffmpegAndroid/ffmpegAndroid/ffmpeg-build/25/x86/include
+
+Name: libswscale
+Description: FFmpeg image rescaling library
+Version: 9.3.100
+Requires: 
+Requires.private: libavutil >= 60.13.100
+Conflicts:
+Libs: -L${libdir}  -lswscale 
+Libs.private: -lm -latomic
+Cflags: -I${includedir}
