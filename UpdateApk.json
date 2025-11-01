@@ -1,7 +1,6 @@
 {
-  "versionCode": 2100,
-  "versionName": "2.1.0.0 Stable",
-  "changelog": "•Исправлени ошибоки\n•Исправлена ошибка с рандом кнопкой\n•Улучшено качество воспроизведения\n•Добавлена информация о всех видах воспроизведения и форматов трека и частот",
-  "apkUrl": "https://github.com/VARKYNTH/VARKYNTHPlayer/releases/download/Stable2.1.0.0/VARKYNTH_Github.apk",
-  "sha256": "4b48a4ec8b5a7b8afe3b371e4f054d02ed33f7c628abe1bbf941e1e4f24a8f90"
+  "versionCode": 3006,
+  "versionName": "3.0.0.6 RC6",
+  "changelog": "⚠️Версия RC6 Может быть не стабильна установка на свой страх и риск⚠️\n•Добавлены дополнительные расширение настройки для полного контроля воспроизведения.\n•Исправлен показ рекламы.\n•Исправлены некоторые ошибки и немного измененный интерфейс",
+  "apkUrl": "https://github.com/VARKYNTH/VARKYNTHPlayer/releases/download/RC6/VARKYNTH_Github_Pro.apk"
 }
