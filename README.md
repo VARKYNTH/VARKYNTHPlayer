@@ -9,8 +9,8 @@
   <a href="https://github.com/VARKYNTH/DACMaster-Pro/stargazers">
     <img src="https://img.shields.io/github/stars/VARKYNTH/NyxSound?style=for-the-badge" alt="Stars"/>
   </a>
-  <a href="https://github.com/SYNORIX-Studios/DACMaster-Pro/network/members">
-    <img src="https://img.shields.io/github/forks/VARKYNTH/VARKYNTH?style=for-the-badge" alt="Forks"/>
+  <a href="https://github.com/VARKYNTH/DACMaster-Pro/network/members">
+    <img src="https://img.shields.io/github/forks/VARKYNTH/DACMaster-Pro?style=for-the-badge" alt="Forks"/>
   </a>
   <a href="https://github.com/VARKYNTH/DACMaster-Pro/releases/latest">
     <img src="https://img.shields.io/github/v/release/VARKYNTH/DACMaster-Pro?style=for-the-badge" alt="Release"/>
@@ -25,9 +25,9 @@
 
 ---
 
-# VARKYNTH Player
+# DACMaster Pro
 
-**VARKYNTH Player** is a modern and feature-rich music player for Android.  
+**DACMaster Pro** is a modern and feature-rich music player for Android.  
 It provides high-quality local audio playback with advanced sound customization, a Material Design 3 interface, and system integration.  
 
 ---
