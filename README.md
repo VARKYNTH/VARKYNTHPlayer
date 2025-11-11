@@ -7,7 +7,7 @@
 
 <p align="center">
   <a href="https://github.com/VARKYNTH/DACMaster-Pro/stargazers">
-    <img src="https://img.shields.io/github/stars/VARKYNTH/NyxSound?style=for-the-badge" alt="Stars"/>
+    <img src="https://img.shields.io/github/stars/VARKYNTH/DACMaster-Pro?style=for-the-badge" alt="Stars"/>
   </a>
   <a href="https://github.com/VARKYNTH/DACMaster-Pro/network/members">
     <img src="https://img.shields.io/github/forks/VARKYNTH/DACMaster-Pro?style=for-the-badge" alt="Forks"/>
@@ -17,6 +17,7 @@
   </a>
   <a href="https://github.com/VARKYNTH/DACMaster-Pro/releases">
     <img src="https://img.shields.io/github/downloads/VARKYNTH/DACMaster-Pro/total?style=for-the-badge" alt="Downloads"/>
+    <img src="https://badgen.net/github/assets-dl/VARKYNTH/DACMaster-Pro" alt="Downloads"/>
   </a>
   <a href="https://github.com/VARKYNTH/DACMaster-Pro/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/VARKYNTH/DACMaster-Pro?style=for-the-badge" alt="License"/>
