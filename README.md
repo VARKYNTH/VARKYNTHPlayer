@@ -1,22 +1,22 @@
 <!-- ЛОГО -->
 <p align="center">
-  <img src="https://raw.githubusercontent.com/VARKYNTH/VARKYNTHPlayer/main/logo.png" alt="VARKYNTH Logo" width="200"/>
+  <img src="https://raw.githubusercontent.com/VARKYNTH/DACMaster-Pro/main/logo.png" alt="VARKYNTH Logo" width="200"/>
 </p>
 
-<h1 align="center">VARKYNTHPlayer</h1>
+<h1 align="center">DACMaster Pro</h1>
 
 <p align="center">
-  <a href="https://github.com/VARKYNTH/VARKYNTHPlayer/stargazers">
+  <a href="https://github.com/VARKYNTH/DACMaster-Pro/stargazers">
     <img src="https://img.shields.io/github/stars/VARKYNTH/NyxSound?style=for-the-badge" alt="Stars"/>
   </a>
-  <a href="https://github.com/SYNORIX-Studios/VARKYNTHPlayer/network/members">
+  <a href="https://github.com/SYNORIX-Studios/DACMaster-Pro/network/members">
     <img src="https://img.shields.io/github/forks/VARKYNTH/VARKYNTH?style=for-the-badge" alt="Forks"/>
   </a>
-  <a href="https://github.com/VARKYNTH/VARKYNTHPlayer/releases/latest">
-    <img src="https://img.shields.io/github/v/release/VARKYNTH/VARKYNTHPlayer?style=for-the-badge" alt="Release"/>
+  <a href="https://github.com/VARKYNTH/DACMaster-Pro/releases/latest">
+    <img src="https://img.shields.io/github/v/release/VARKYNTH/DACMaster-Pro?style=for-the-badge" alt="Release"/>
   </a>
-  <a href="https://github.com/VARKYNTH/VARKYNTHPlayer/releases">
-    <img src="https://img.shields.io/github/downloads/VARKYNTH/VARKYNTHPlayer/total?style=for-the-badge" alt="Downloads"/>
+  <a href="https://github.com/VARKYNTH/DACMaster-Pro/releases">
+    <img src="https://img.shields.io/github/downloads/VARKYNTH/DACMaster-Pro/total?style=for-the-badge" alt="Downloads"/>
   </a>
   <a href="https://github.com/VARKYNTH/VARKYNTHPlayer/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/VARKYNTH/VARKYNTHPlayer?style=for-the-badge" alt="License"/>
