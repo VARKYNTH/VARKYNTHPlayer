@@ -18,8 +18,8 @@
   <a href="https://github.com/VARKYNTH/DACMaster-Pro/releases">
     <img src="https://img.shields.io/github/downloads/VARKYNTH/DACMaster-Pro/total?style=for-the-badge" alt="Downloads"/>
   </a>
-  <a href="https://github.com/VARKYNTH/VARKYNTHPlayer/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/VARKYNTH/VARKYNTHPlayer?style=for-the-badge" alt="License"/>
+  <a href="https://github.com/VARKYNTH/DACMaster-Pro/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/VARKYNTH/DACMaster-Pro?style=for-the-badge" alt="License"/>
   </a>
 </p>
 
