@@ -1,6 +1,6 @@
 {
-  "versionCode": 3020,
-  "versionName": "3.0.2.0 Stable",
-  "changelog": "•Исправлены ошибки\n•Добавлена функция импорта/экспорта настроек\n•Обновлены библиотеи до актуальной версии\n•Улучшен UI/UX\n•Мелкие улучшения и исправления",
-  "apkUrl": "https://github.com/VARKYNTH/VARKYNTHPlayer/releases/download/Stable3.0.2.0/VARKYNTH_Github_Pro.apk"
+  "versionCode": 3032,
+  "versionName": "3.0.3.2 Beta_2",
+  "changelog": "•Исправлены ошибки\n•Добавлен Вход через гугл аккаунт для сохранения подписки\n•Удалена реклама \n•Мелкие улучшения и исправления\n•Повышена производительность и Автономность",
+  "apkUrl": "https://github.com/VARKYNTH/DACMaster-Pro/releases/download/Beta_2/DACMaster_3.0.3.2.Beta_2.apk"
 }
